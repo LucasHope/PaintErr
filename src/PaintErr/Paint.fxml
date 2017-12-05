@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Button?>
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PaintErr.PaintController">
 
     <top>
@@ -30,6 +31,7 @@
                 <Slider fx:id="slider" blockIncrement="1" layoutX="26.0" min="2" layoutY="32.0" majorTickUnit="2" max="24" minorTickCount="1" prefHeight="45.0" prefWidth="231.0" showTickLabels="true" showTickMarks="true" />
                 <ColorPicker fx:id="colorPicker" />
                 <CheckBox fx:id="eraser" text="Eraser" />
+                <Button fx:id="button" text="Clear all" />
             </ToolBar>
 
         </VBox>

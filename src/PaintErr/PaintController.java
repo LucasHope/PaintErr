@@ -5,6 +5,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
@@ -27,6 +28,9 @@ public class PaintController {
 
     @FXML
     private Slider slider;
+
+    @FXML
+    private Button button;
 
     // called automatically after Controller class instantiated
     public void initialize() {
@@ -60,18 +64,17 @@ public class PaintController {
         //draw when dragged
         canvas.setOnMouseDragged(e -> {
             double size = slider.getValue();
-//            double x = e.getX() - size / 2;
-//            double y = e.getY() - size / 2;
-//
+
             if(eraser.isSelected()) {
                 gc.clearRect(e.getX(), e.getY(), size, size);
             } else {
-//                gc.setFill(colorPicker.getValue());
-//                gc.fillRoundRect(x, y, size, size,size,size);
-//            }
                 gc.lineTo(e.getX(), e.getY());
                 gc.stroke();
             }
+        });
+
+        button.setOnAction(e->{
+            gc.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
         });
     }
 
@@ -93,9 +96,6 @@ public class PaintController {
     }
     public void onExit() {
         Platform.exit();
-    }
-
-    public static void main(String[] args) {
     }
 }
 
