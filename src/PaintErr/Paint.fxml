@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PaintErr.PaintController">
+
+    <top>
+        <VBox>
+
+            <MenuBar>
+                <Menu text="File">
+                    <MenuItem text="New" />
+                    <MenuItem onAction="#onSave" text="Save" />
+                    <MenuItem onAction="#onExit" text="Exit" />
+                </Menu>
+            </MenuBar>
+
+            <ToolBar>
+                <HBox alignment="BOTTOM_CENTER" spacing="5" />
+                <Slider fx:id="slider" blockIncrement="1" layoutX="26.0" min="2" layoutY="32.0" majorTickUnit="2" max="24" minorTickCount="1" prefHeight="45.0" prefWidth="231.0" showTickLabels="true" showTickMarks="true" />
+                <ColorPicker fx:id="colorPicker" />
+                <CheckBox fx:id="eraser" text="Eraser" />
+            </ToolBar>
+
+        </VBox>
+    </top>
+
+    <center>
+        <Canvas fx:id="canvas" height="700" width="800" />
+    </center>
+
+</BorderPane>

@@ -1,4 +1,4 @@
-package Err.Paint;
+package Reference;
 
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -64,4 +64,6 @@ public class PaintPictureController {
         Platform.exit();
     }
 
+    public static void main(String[] args) {
+    }
 }
