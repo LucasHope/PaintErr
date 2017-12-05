@@ -2,7 +2,7 @@ package PaintErr;
 
 import PaintErr.Image;
 
-import java.sql.Connection;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,30 +10,142 @@ public class ImageDAO {
 
     public static List<Image> list = new ArrayList<>();
 
+    private static String url = "jdbc:mysql://localhost:3306/world?useSSL=false";
+    private static String u = "imguser";
+    private static String p = "paint";
+
     private static Connection con;
 
-    public static List<Image> getAll() {
+    // to get all Image records from the database
+    public static List<Image> getAll() throws SQLException {
 
-        // TODO
+        // open a connection to the database, in case of error return empty list
+        try {
+            con = DriverManager.getConnection(url, u, p);
+        } catch (SQLException ex) {
+            System.out.println("Could not connect to database!");
+            return list;
+        }
 
+        // select all items in the "img"-table
+        String sql = "SELECT * FROM img;";
+
+        // create and execute statement
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        // empty list for a refreshed list
+        list = new ArrayList<>();
+
+        // iterate through results to find all the Images and add them to list
+        while(rs.next()) {
+
+            Image i = new Image(
+                    rs.getInt("ID"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getBlob("thumbnail"),
+                    rs.getBlob("img")
+            );
+
+            list.add(i);
+        }
+
+        // return the compiled list
         return list;
     }
 
-    public static Image getById(int id) {
-        Image i = new Image();
+    // to get one Image record from the database, identified by ID
+    public static Image getById(int id) throws SQLException {
 
-        // TODO
+        Image i = null;
 
+        // try for a connection, in case of error return an empty object
+        try {
+            con = DriverManager.getConnection(url, u, p);
+        } catch (SQLException ex) {
+            System.out.println("Could not connect to database!");
+            return i;
+        }
+
+        // query for a specific record
+        String sql = "SELECT * FROM img WHERE ID=?;";
+
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+
+        // create the Image to be returned from the ResultSet
+        while(rs.next()) {
+
+            i = new Image(
+                    rs.getInt("ID"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getBlob("thumbnail"),
+                    rs.getBlob("img")
+            );
+
+        }
+
+        // return the found (or null) Image
         return i;
     }
 
     public static boolean saveImg(Image i) {
 
-        // TODO
+        // try for a connection, in case of error return false for failed save
+        try {
+            con = DriverManager.getConnection(url, u, p);
+        } catch (SQLException ex) {
+            System.out.println("Could not connect to database!");
+            return false;
+        }
 
-        return true;
+        // int to receive the result of create / update
+        int result = 0;
+
+        try {
+            // check if the object has an ID (exists already)
+            // create statement if no ID, update if has ID
+            if (i.getID() == 0) {
+
+                // create statement to create a new record
+                String sql = "INSERT img (name, description, thumbnail, img) VALUES (?, ?, ?, ?);";
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                ps.setString(1, i.getName());
+                ps.setString(2, i.getDescription());
+                ps.setBlob(3, i.getThumbnail());
+                ps.setBlob(4, i.getImg());
+
+                result = ps.executeUpdate();
+
+            } else {
+
+                // update statement to update an existing record in database
+                String sql = "UPDATE img SET name = ?, description = ?, thumbnail = ?, img = ? WHERE ID=?;";
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                ps.setString(1, i.getName());
+                ps.setString(2, i.getDescription());
+                ps.setBlob(3, i.getThumbnail());
+                ps.setBlob(4, i.getImg());
+                ps.setInt(5, i.getID());
+
+                result = ps.executeUpdate();
+
+            }
+        } catch (Exception e) {
+            System.out.println("Failed: " + e.getMessage());
+            return false;
+        }
+
+        // if the create or update affected 1 row (was successful), return true for a successful save
+        if(result == 1) return true;
+        else return false;
     }
 
-    
+
 
 }

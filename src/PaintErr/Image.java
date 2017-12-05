@@ -6,9 +6,9 @@ import java.sql.Blob;
 
 public class Image {
 
-    private int ID;
-    private String name, description;
-    private Blob thumbnail, img;
+    private int ID = 0;
+    private String name = "", description = "";
+    private Blob thumbnail = null, img = null;
 
     public Image() { }
 
