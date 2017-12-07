@@ -5,6 +5,7 @@
 
 # User-specific stuff:
 *.png
+src/*.png
 src/img/*.png
 .idea/**/workspace.xml
 .idea/**/tasks.xml
