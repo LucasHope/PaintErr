@@ -15,9 +15,10 @@ import java.io.IOException;
 import static javafx.application.Application.launch;
 
 public class PaintApplication extends Application {
-    private static Scene scene;
 
-    public static Scene getScene() {
+    private Scene scene;
+
+    public Scene getScene() {
         return scene;
     }
 

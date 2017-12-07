@@ -181,6 +181,7 @@ public class ImageDAO {
             con = DriverManager.getConnection(url, u, p);
         } catch (SQLException ex) {
             System.out.println("Could not connect to database!");
+            System.out.println(ex.getMessage());
             return false;
         }
 
@@ -243,7 +244,7 @@ public class ImageDAO {
         WritableImage writableImage = scene.snapshot(null);
 
         // Write snapshot to file system as a .png image
-        File img = new File("/src/img/savetemp.png");
+        File img = new File("./src/img/", "savetemp.png");
         try {
             ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null),
                     "png", img);

@@ -3,6 +3,7 @@ package PaintErr;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class PaintController {
+
     @FXML
     private ResizableCanvas canvas;
 
@@ -38,12 +40,14 @@ public class PaintController {
 
     // called automatically after Controller class instantiated
     public void initialize() {
+
         //Opens the example png so the user can modify it
 //        try {
 //            setCanvas(canvas,new javafx.scene.image.Image(getClass().getResource("paint_err.png").openStream()));
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         canvas.widthProperty().bind(borderPane.widthProperty());
@@ -66,7 +70,8 @@ public class PaintController {
                 gc.beginPath();
                 gc.lineTo(event.getX(), event.getY());
                 gc.stroke();
-            }});
+            }
+        });
 
         //draw when dragged
         canvas.setOnMouseDragged(e -> {
@@ -80,31 +85,41 @@ public class PaintController {
             }
         });
 
-
         button.setOnAction(e->{
             gc.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
         });
-    }
 
+    }
 
     String title = "paint_err";
 
     public void onSave() {
+
         try {
-            javafx.scene.image.Image snap = canvas.snapshot(null, null);
-            ImageIO.write(SwingFXUtils.fromFXImage(snap, null), "png", new File(title + ".png"));
-//            PaintErr.Image image = new PaintErr.Image(snap)
-            PaintErr.Image i = new PaintErr.Image(PaintApplication.getScene());
+
+//            javafx.scene.image.Image snap = canvas.snapshot(null, null);
+//            File img = new File(title + ".png");
+//            ImageIO.write(SwingFXUtils.fromFXImage(snap, null), "png", img);
+//            PaintErr.Image i = new PaintErr.Image(img);
+
+            Scene scene = button.getScene();
+            PaintErr.Image i = new PaintErr.Image(scene);
+
             ImageDAO.saveImg(i);
+
         } catch (Exception e) {
             System.out.println("failed to save .png");
             e.printStackTrace();
         }
     }
+
     private void setCanvas(Canvas canvas, Image img) {
+
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.drawImage(img, 0, 0,canvas.getWidth(), canvas.getHeight());
+
     }
+
     public void onExit() {
         Platform.exit();
     }
