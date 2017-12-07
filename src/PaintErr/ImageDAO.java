@@ -55,7 +55,7 @@ public class ImageDAO {
 
             imgcounter++;
 
-            loadImg = new File("/src/img/", "loadtemp" + imgcounter + ".png");
+            loadImg = new File("./src/img/", "loadtemp" + imgcounter + ".png");
             imgInput = new FileOutputStream(loadImg);
 
             blob = rs.getBlob("img");
@@ -76,10 +76,10 @@ public class ImageDAO {
 //            imgcounter++;
 //            thumbnailcounter++;
 //
-//            loadImg = new File("/src/img/", "loadtemp" + imgcounter + ".png");
+//            loadImg = new File("./src/img/", "loadtemp" + imgcounter + ".png");
 //            imgInput = new FileOutputStream(loadImg);
 //
-//            loadThumbnail = new File("/src/img/", "loadthumbnailtemp" + thumbnailcounter + ".png");
+//            loadThumbnail = new File("./src/img/", "loadthumbnailtemp" + thumbnailcounter + ".png");
 //            thumbnailInput = new FileOutputStream(loadThumbnail);
 //
 //            blob = rs.getBlob("img");
@@ -125,10 +125,10 @@ public class ImageDAO {
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
 
-        File loadImg = new File("/src/img/", "loadtemp.png");
+        File loadImg = new File("./src/img/", "loadtemp.png");
         FileOutputStream imgInput = new FileOutputStream(loadImg);
 
-        File loadThumbnail = new File("/src/img/", "loadthumbnailtemp.png");
+        File loadThumbnail = new File("./src/img/", "loadthumbnailtemp.png");
         FileOutputStream thumbnailInput = new FileOutputStream(loadThumbnail);
 
         byte[] b;
@@ -262,7 +262,7 @@ public class ImageDAO {
 
         // TODO
 
-        File thumbnail = new File("/src/img/", "thumbnail.png");
+        File thumbnail = new File("./src/img/", "thumbnail.png");
 
         return thumbnail;
     }
