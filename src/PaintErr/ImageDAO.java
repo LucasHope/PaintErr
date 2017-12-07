@@ -1,10 +1,16 @@
 package PaintErr;
 
 import PaintErr.Image;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.Scene;
+import javafx.scene.image.WritableImage;
 
+import javax.imageio.ImageIO;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public class ImageDAO {
 
@@ -17,7 +23,7 @@ public class ImageDAO {
     private static Connection con;
 
     // to get all Image records from the database
-    public static List<Image> getAll() throws SQLException {
+    public static List<Image> getAll() throws SQLException, IOException {
 
         // open a connection to the database, in case of error return empty list
         try {
@@ -37,26 +43,70 @@ public class ImageDAO {
         // empty list for a refreshed list
         list = new ArrayList<>();
 
-        // iterate through results to find all the Images and add them to list
-        while(rs.next()) {
+        File loadImg, loadThumbnail;
+        FileOutputStream imgInput, thumbnailInput;
+
+        byte[] b;
+        Blob blob;
+
+        int imgcounter = 0, thumbnailcounter = 0;
+
+        while(rs.next()){
+
+            imgcounter++;
+
+            loadImg = new File("/img/loadtemp" + imgcounter + ".png");
+            imgInput = new FileOutputStream(loadImg);
+
+            blob = rs.getBlob("img");
+            b = blob.getBytes(1,(int)blob.length());
+            imgInput.write(b);
 
             Image i = new Image(
                     rs.getInt("ID"),
-                    rs.getString("name"),
-                    rs.getString("description"),
-                    rs.getBlob("thumbnail"),
-                    rs.getBlob("img")
+                    loadImg
             );
 
             list.add(i);
         }
+
+        // iterate through results to find all the Images and add them to list
+//        while (rs.next()) {
+//
+//            imgcounter++;
+//            thumbnailcounter++;
+//
+//            loadImg = new File("/img/loadtemp" + imgcounter + ".png");
+//            imgInput = new FileOutputStream(loadImg);
+//
+//            loadThumbnail = new File("/img/loadthumbnailtemp" + thumbnailcounter + ".png");
+//            thumbnailInput = new FileOutputStream(loadThumbnail);
+//
+//            blob = rs.getBlob("img");
+//            b = blob.getBytes(1,(int)blob.length());
+//            imgInput.write(b);
+//
+//            blob = rs.getBlob("thumbnail");
+//            b = blob.getBytes(1,(int)blob.length());
+//            thumbnailInput.write(b);
+//
+//            Image i = new Image(
+//                    rs.getInt("ID"),
+//                    rs.getString("name"),
+//                    rs.getString("description"),
+//                    loadThumbnail,
+//                    loadImg
+//            );
+//
+//            list.add(i);
+//        }
 
         // return the compiled list
         return list;
     }
 
     // to get one Image record from the database, identified by ID
-    public static Image getById(int id) throws SQLException {
+    public static Image getById(int id) throws SQLException, IOException {
 
         Image i = null;
 
@@ -75,24 +125,56 @@ public class ImageDAO {
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
 
-        // create the Image to be returned from the ResultSet
-        while(rs.next()) {
+        File loadImg = new File("/img/loadtemp.png");
+        FileOutputStream imgInput = new FileOutputStream(loadImg);
+
+        File loadThumbnail = new File("/img/loadthumbnailtemp.png");
+        FileOutputStream thumbnailInput = new FileOutputStream(loadThumbnail);
+
+        byte[] b;
+        Blob blob;
+
+        while(rs.next()){
+
+            blob=rs.getBlob("img");
+            b=blob.getBytes(1,(int)blob.length());
+            imgInput.write(b);
 
             i = new Image(
                     rs.getInt("ID"),
-                    rs.getString("name"),
-                    rs.getString("description"),
-                    rs.getBlob("thumbnail"),
-                    rs.getBlob("img")
+                    loadImg
             );
-
         }
+
+        // create the Image to be returned from the ResultSet
+//        while (rs.next()) {
+//
+//            blob=rs.getBlob("img");
+//            b=blob.getBytes(1,(int)blob.length());
+//            imgInput.write(b);
+//
+//            blob=rs.getBlob("thumbnail");
+//            b=blob.getBytes(1,(int)blob.length());
+//            thumbnailInput.write(b);
+//
+//            i = new Image(
+//                    rs.getInt("ID"),
+//                    rs.getString("name"),
+//                    rs.getString("description"),
+//                    loadThumbnail,
+//                    loadImg
+//            );
+//
+//        }
 
         // return the found (or null) Image
         return i;
     }
 
-    public static boolean saveImg(Image i) {
+    public static boolean saveImg(Image i) throws FileNotFoundException, SQLException {
+
+        File img = i.getImg();
+        FileInputStream imgInput = new FileInputStream(img);
 
         // try for a connection, in case of error return false for failed save
         try {
@@ -111,27 +193,36 @@ public class ImageDAO {
             if (i.getID() == 0) {
 
                 // create statement to create a new record
-                String sql = "INSERT img (name, description, thumbnail, img) VALUES (?, ?, ?, ?);";
+//                String sql = "INSERT img (name, description, thumbnail, img) VALUES (?, ?, ?, ?);";
+                String sql = "INSERT img (img) VALUES (?);";
+
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                ps.setString(1, i.getName());
-                ps.setString(2, i.getDescription());
-                ps.setBlob(3, i.getThumbnail());
-                ps.setBlob(4, i.getImg());
+//                ps.setString(1, name);
+//                ps.setString(2, description);
+//                ps.setBinaryStream(3, thumbnailInput, (int)thumbnail.length());
+//                ps.setBinaryStream(4, imgInput, (int)img.length());
+
+                ps.setBinaryStream(1, imgInput, (int)img.length());
 
                 result = ps.executeUpdate();
 
             } else {
 
                 // update statement to update an existing record in database
-                String sql = "UPDATE img SET name = ?, description = ?, thumbnail = ?, img = ? WHERE ID=?;";
+//                String sql = "UPDATE img SET name = ?, description = ?, thumbnail = ?, img = ? WHERE ID=?;";
+                String sql = "UPDATE img SET img = ? WHERE ID=?;";
+
                 PreparedStatement ps = con.prepareStatement(sql);
 
-                ps.setString(1, i.getName());
-                ps.setString(2, i.getDescription());
-                ps.setBlob(3, i.getThumbnail());
-                ps.setBlob(4, i.getImg());
-                ps.setInt(5, i.getID());
+//                ps.setString(1, i.getName());
+//                ps.setString(2, i.getDescription());
+//                ps.setBinaryStream(3, thumbnailInput, (int)thumbnail.length());
+//                ps.setBinaryStream(4, imgInput, (int)img.length());
+//                ps.setInt(5, i.getID());
+
+                ps.setBinaryStream(1, imgInput, (int)img.length());
+                ps.setInt(2, i.getID());
 
                 result = ps.executeUpdate();
 
@@ -142,10 +233,58 @@ public class ImageDAO {
         }
 
         // if the create or update affected 1 row (was successful), return true for a successful save
-        if(result == 1) return true;
+        if (result == 1) return true;
         else return false;
     }
 
+    public static File saveToFile(Scene scene) throws SQLException, FileNotFoundException {
 
+        // Take a snapshot (WritableImage) from the given scene
+        WritableImage writableImage = scene.snapshot(null);
+
+        // Write snapshot to file system as a .png image
+        File img = new File("/img/savetemp.png");
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null),
+                    "png", img);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        // generate thumbnail TODO
+        // File thumbnail = getThumbnail(img);
+
+        return img;
+    }
+
+    private File getThumbnail(File img) {
+
+        // TODO
+
+        File thumbnail = new File("/img/thumbnail.png");
+
+        return thumbnail;
+    }
+
+    // loop through all files in "img"-folder and return the last (in alphabetical order) filename without extension
+    private String getCurrentLastImgName() {
+
+        File imgDirectory = new File("./img/");
+        File[] files = imgDirectory.listFiles();
+
+        TreeSet<String> filenames = new TreeSet<>();
+
+        for (File f : files) {
+            String filename = f.getName();
+            String extension = filename.substring(filename.length() - 3);
+            if ("png".equals(extension)) {
+                filenames.add(filename.substring(0, filename.length() - 3));
+            }
+        }
+
+        if (!filenames.isEmpty())return filenames.last();
+        else return "0";
+
+    }
 
 }

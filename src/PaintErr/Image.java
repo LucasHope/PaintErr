@@ -2,24 +2,54 @@ package PaintErr;
 
 // Entity-class, "img"-table @ DB
 
-import java.sql.Blob;
+import javafx.scene.Scene;
+
+import java.io.File;
 
 public class Image {
 
     private int ID = 0;
     private String name = "", description = "";
-    private Blob thumbnail = null, img = null;
+    private File thumbnail = null, img = null;
 
     public Image() { }
 
-    public Image(String name, String description, Blob thumbnail, Blob img) {
+    public Image(int id, File img)  {
+        this.ID = id;
+        this.img = img;
+    }
+
+    public Image(int id, Scene scene)  {
+        this.ID = id;
+        try {
+            this.img = ImageDAO.saveToFile(scene);
+        } catch (Exception e) {
+            System.out.println("Could not save Image!");
+            e.printStackTrace();
+        }
+    }
+
+    public Image(File img) {
+        this.img = img;
+    }
+
+    public Image(Scene scene) {
+        try {
+            this.img = ImageDAO.saveToFile(scene);
+        } catch (Exception e) {
+            System.out.println("Could not save Image!");
+            e.printStackTrace();
+        }
+    }
+
+    public Image(String name, String description, File thumbnail, File img) {
         this.name = name;
         this.description = description;
         this.thumbnail = thumbnail;
         this.img = img;
     }
 
-    public Image(int ID, String name, String description, Blob thumbnail, Blob img) {
+    public Image(int ID, String name, String description, File thumbnail, File img) {
 
         this.ID = ID;
         this.name = name;
@@ -48,19 +78,19 @@ public class Image {
         this.description = description;
     }
 
-    public Blob getThumbnail() {
+    public File getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(Blob thumbnail) {
+    public void setThumbnail(File thumbnail) {
         this.thumbnail = thumbnail;
     }
 
-    public Blob getImg() {
+    public File getImg() {
         return img;
     }
 
-    public void setImg(Blob img) {
+    public void setImg(File img) {
         this.img = img;
     }
 }
