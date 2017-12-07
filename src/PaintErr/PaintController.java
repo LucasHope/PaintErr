@@ -100,8 +100,11 @@ public class PaintController {
 //            ImageIO.write(SwingFXUtils.fromFXImage(snap, null), "png", img);
 //            PaintErr.Image i = new PaintErr.Image(img);
 
-            Scene scene = button.getScene();
-            PaintErr.Image i = new PaintErr.Image(scene);
+            // not needed anymore; redone to utilise canvas
+//            Scene scene = button.getScene();
+//            PaintErr.Image i = new PaintErr.Image(scene);
+
+            PaintErr.Image i = new PaintErr.Image(canvas);
 
             ImageDAO.saveImg(i);
 

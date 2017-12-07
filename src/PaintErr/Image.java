@@ -3,6 +3,7 @@ package PaintErr;
 // Entity-class, "img"-table @ DB
 
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 
 import java.io.File;
 
@@ -19,10 +20,10 @@ public class Image {
         this.img = img;
     }
 
-    public Image(int id, Scene scene)  {
+    public Image(int id, ResizableCanvas canvas)  {
         this.ID = id;
         try {
-            this.img = ImageDAO.saveToFile(scene);
+            this.img = ImageDAO.saveToFile(canvas);
         } catch (Exception e) {
             System.out.println("Could not save Image!");
             e.printStackTrace();
@@ -33,9 +34,9 @@ public class Image {
         this.img = img;
     }
 
-    public Image(Scene scene) {
+    public Image(ResizableCanvas canvas) {
         try {
-            this.img = ImageDAO.saveToFile(scene);
+            this.img = ImageDAO.saveToFile(canvas);
         } catch (Exception e) {
             System.out.println("Could not save Image!");
             e.printStackTrace();
