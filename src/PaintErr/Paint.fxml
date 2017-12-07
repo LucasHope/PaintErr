@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
+<?import PaintErr.ResizableCanvas?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Menu?>
@@ -12,8 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.Button?>
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PaintErr.PaintController">
+<BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PaintErr.PaintController">
 
     <top>
         <VBox>
@@ -28,9 +28,9 @@
 
             <ToolBar>
                 <HBox alignment="BOTTOM_CENTER" spacing="5" />
-                <Slider fx:id="slider" blockIncrement="1" layoutX="26.0" min="2" layoutY="32.0" majorTickUnit="2" max="24" minorTickCount="1" prefHeight="45.0" prefWidth="231.0" showTickLabels="true" showTickMarks="true" />
+                <Slider fx:id="slider" blockIncrement="1" layoutX="26.0" layoutY="32.0" majorTickUnit="2" max="24" min="2" minorTickCount="1" prefHeight="45.0" prefWidth="231.0" showTickLabels="true" showTickMarks="true" />
                 <ColorPicker fx:id="colorPicker" />
-                <CheckBox fx:id="eraser" text="Eraser" />
+                <CheckBox fx:id="eraser" prefHeight="21.0" prefWidth="142.0" text="Eraser" />
                 <Button fx:id="button" text="Clear all" />
             </ToolBar>
 
@@ -38,7 +38,7 @@
     </top>
 
     <center>
-        <Canvas fx:id="canvas" height="700" width="800" />
+        <ResizableCanvas fx:id="canvas" height="700" width="1200" />
     </center>
 
 </BorderPane>

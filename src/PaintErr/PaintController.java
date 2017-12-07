@@ -10,6 +10,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
@@ -18,7 +19,7 @@ import java.io.IOException;
 
 public class PaintController {
     @FXML
-    private Canvas canvas;
+    private ResizableCanvas canvas;
 
     @FXML
     private ColorPicker colorPicker;
@@ -32,6 +33,9 @@ public class PaintController {
     @FXML
     private Button button;
 
+    @FXML
+    private BorderPane borderPane;
+
     // called automatically after Controller class instantiated
     public void initialize() {
         //Opens the example png so the user can modify it
@@ -41,6 +45,9 @@ public class PaintController {
 //            e.printStackTrace();
 //        }
         GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        canvas.widthProperty().bind(borderPane.widthProperty());
+        canvas.heightProperty().bind(borderPane.heightProperty());
 
         //set black as default
         colorPicker.setValue(Color.BLACK);
@@ -73,6 +80,7 @@ public class PaintController {
             }
         });
 
+
         button.setOnAction(e->{
             gc.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
         });
@@ -85,6 +93,8 @@ public class PaintController {
         try {
             javafx.scene.image.Image snap = canvas.snapshot(null, null);
             ImageIO.write(SwingFXUtils.fromFXImage(snap, null), "png", new File(title + ".png"));
+//            PaintErr.Image image = new PaintErr.Image(snap)
+//            ImageDAO.saveImg()
         } catch (Exception e) {
             System.out.println("failed to save .png");
             e.printStackTrace();
