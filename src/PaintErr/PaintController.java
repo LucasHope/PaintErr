@@ -94,7 +94,8 @@ public class PaintController {
             javafx.scene.image.Image snap = canvas.snapshot(null, null);
             ImageIO.write(SwingFXUtils.fromFXImage(snap, null), "png", new File(title + ".png"));
 //            PaintErr.Image image = new PaintErr.Image(snap)
-//            ImageDAO.saveImg()
+            PaintErr.Image i = new PaintErr.Image(PaintApplication.getScene());
+            ImageDAO.saveImg(i);
         } catch (Exception e) {
             System.out.println("failed to save .png");
             e.printStackTrace();

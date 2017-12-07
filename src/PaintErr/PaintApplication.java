@@ -15,6 +15,20 @@ import java.io.IOException;
 import static javafx.application.Application.launch;
 
 public class PaintApplication extends Application {
+    private static Scene scene;
+
+    public static Scene getScene() {
+        return scene;
+    }
+
+    public PaintApplication() {
+        try {
+            scene = new Scene(FXMLLoader.load(getClass().getResource("Paint.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -28,12 +42,10 @@ public class PaintApplication extends Application {
         vBox.getChildren().addAll(label, button);
 
         button.setOnAction(event -> {
-            try {
-                primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Paint.fxml"))));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                primaryStage.setScene(scene);
+
         });
+
         primaryStage.setScene(new Scene(vBox, 800,700));
         primaryStage.show();
     }
