@@ -41,17 +41,12 @@ public class PaintController {
     // called automatically after Controller class instantiated
     public void initialize() {
 
-        //Opens the example png so the user can modify it
-//        try {
-//            setCanvas(canvas,new javafx.scene.image.Image(getClass().getResource("paint_err.png").openStream()));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
         GraphicsContext gc = canvas.getGraphicsContext2D();
+
 
         canvas.widthProperty().bind(borderPane.widthProperty());
         canvas.heightProperty().bind(borderPane.heightProperty());
+
 
         //set black as default
         colorPicker.setValue(Color.BLACK);
@@ -87,7 +82,10 @@ public class PaintController {
 
         button.setOnAction(e->{
             gc.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
+
         });
+        //Opens the example png so the user can modify it
+
 
     }
 
@@ -116,7 +114,7 @@ public class PaintController {
     private void setCanvas(Canvas canvas, Image img) {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.drawImage(img, 0, 0,canvas.getWidth(), canvas.getHeight());
+        gc.drawImage(img, 0, 0, borderPane.getWidth(), borderPane.getHeight());
 
     }
 
