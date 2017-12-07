@@ -9,11 +9,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 
 import static javafx.application.Application.launch;
@@ -53,7 +55,9 @@ public class PaintApplication extends Application {
         });
 
         try {
-            setCanvas(canvas,new javafx.scene.image.Image(getClass().getResource("/img/savetemp.png").openStream()));
+            File img = ImageDAO.getAll().get(0).getImg();
+            Image image = new Image(img.toURI().toString());
+            setCanvas(canvas, image );
         } catch (IOException ex) {
             ex.printStackTrace();
         }
