@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.WritableImage;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -54,17 +55,26 @@ public class ImageDAO {
         while(rs.next()){
 
             imgcounter++;
+            thumbnailcounter++;
 
             loadImg = new File("./src/img/", "loadtemp" + imgcounter + ".png");
             imgInput = new FileOutputStream(loadImg);
+
+            loadThumbnail = new File("./src/img/", "loadthumbnailtemp" + thumbnailcounter + ".png");
+            thumbnailInput = new FileOutputStream(loadThumbnail);
 
             blob = rs.getBlob("img");
             b = blob.getBytes(1,(int)blob.length());
             imgInput.write(b);
 
+            blob=rs.getBlob("thumbnail");
+            b=blob.getBytes(1,(int)blob.length());
+            thumbnailInput.write(b);
+
             Image i = new Image(
                     rs.getInt("ID"),
-                    loadImg
+                    loadImg,
+                    loadThumbnail
             );
 
             list.add(i);
@@ -140,9 +150,14 @@ public class ImageDAO {
             b=blob.getBytes(1,(int)blob.length());
             imgInput.write(b);
 
+            blob=rs.getBlob("thumbnail");
+            b=blob.getBytes(1,(int)blob.length());
+            thumbnailInput.write(b);
+
             i = new Image(
                     rs.getInt("ID"),
-                    loadImg
+                    loadImg,
+                    loadThumbnail
             );
         }
 
@@ -176,6 +191,9 @@ public class ImageDAO {
         File img = i.getImg();
         FileInputStream imgInput = new FileInputStream(img);
 
+        File thumbnail = i.getThumbnail();
+        FileInputStream thumbInput = new FileInputStream(thumbnail);
+
         // try for a connection, in case of error return false for failed save
         try {
             con = DriverManager.getConnection(url, u, p);
@@ -195,7 +213,7 @@ public class ImageDAO {
 
                 // create statement to create a new record
 //                String sql = "INSERT img (name, description, thumbnail, img) VALUES (?, ?, ?, ?);";
-                String sql = "INSERT img (img) VALUES (?);";
+                String sql = "INSERT img (img, thumbnail) VALUES (?, ?);";
 
                 PreparedStatement ps = con.prepareStatement(sql);
 
@@ -205,6 +223,7 @@ public class ImageDAO {
 //                ps.setBinaryStream(4, imgInput, (int)img.length());
 
                 ps.setBinaryStream(1, imgInput, (int)img.length());
+                ps.setBinaryStream(2, thumbInput, (int)thumbnail.length());
 
                 result = ps.executeUpdate();
 
@@ -212,7 +231,7 @@ public class ImageDAO {
 
                 // update statement to update an existing record in database
 //                String sql = "UPDATE img SET name = ?, description = ?, thumbnail = ?, img = ? WHERE ID=?;";
-                String sql = "UPDATE img SET img = ? WHERE ID=?;";
+                String sql = "UPDATE img SET img = ?, thumbnail = ? WHERE ID=?;";
 
                 PreparedStatement ps = con.prepareStatement(sql);
 
@@ -223,7 +242,8 @@ public class ImageDAO {
 //                ps.setInt(5, i.getID());
 
                 ps.setBinaryStream(1, imgInput, (int)img.length());
-                ps.setInt(2, i.getID());
+                ps.setBinaryStream(2, thumbInput, (int)thumbnail.length());
+                ps.setInt(3, i.getID());
 
                 result = ps.executeUpdate();
 
@@ -252,23 +272,22 @@ public class ImageDAO {
             System.out.println(ex.getMessage());
         }
 
-        // generate thumbnail TODO
-        // File thumbnail = getThumbnail(img);
-
         return img;
     }
 
-    private File getThumbnail(File img) {
+    public static File getThumbnail(File img) throws IOException {
 
-        // TODO
+        BufferedImage bufferedThumbnail = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        bufferedThumbnail.createGraphics().drawImage(ImageIO.read(img).getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH),0,0,null);
 
-        File thumbnail = new File("./src/img/", "thumbnail.png");
+        File thumbImg = new File("./src/img/", "savethumbtemp.png");
+        ImageIO.write(bufferedThumbnail, "png", thumbImg);
 
-        return thumbnail;
+        return thumbImg;
     }
 
     // loop through all files in "img"-folder and return the last (in alphabetical order) filename without extension
-    private String getCurrentLastImgName() {
+    public static String getCurrentLastImgName() {
 
         File imgDirectory = new File("./src/img/");
         File[] files = imgDirectory.listFiles();
