@@ -6,10 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -36,16 +33,16 @@ public class PaintController {
     private Button button;
 
     @FXML
-    private BorderPane borderPane;
+    private static BorderPane borderPane;
 
     // called automatically after Controller class instantiated
     public void initialize() {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-
-        canvas.widthProperty().bind(borderPane.widthProperty());
-        canvas.heightProperty().bind(borderPane.heightProperty());
+//
+//        canvas.widthProperty().bind(borderPane.widthProperty());
+//        canvas.heightProperty().bind(borderPane.heightProperty());
 
 
         //set black as default
@@ -114,7 +111,7 @@ public class PaintController {
         }
     }
 
-    private void setCanvas(Canvas canvas, Image img) {
+    static void setCanvas(Canvas canvas, Image img) {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.drawImage(img, 0, 0, borderPane.getWidth(), borderPane.getHeight());
@@ -124,5 +121,6 @@ public class PaintController {
     public void onExit() {
         Platform.exit();
     }
+
 }
 

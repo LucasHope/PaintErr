@@ -18,7 +18,7 @@
     <top>
         <VBox>
 
-            <MenuBar>
+            <MenuBar fx:id="menuBar">
                 <Menu text="File">
                     <MenuItem text="New" />
                     <MenuItem onAction="#onSave" text="Save" />
@@ -26,7 +26,7 @@
                 </Menu>
             </MenuBar>
 
-            <ToolBar>
+            <ToolBar >
                 <HBox alignment="BOTTOM_CENTER" spacing="5" />
                 <Slider fx:id="slider" blockIncrement="1" layoutX="26.0" layoutY="32.0" majorTickUnit="2" max="24" min="2" minorTickCount="1" prefHeight="45.0" prefWidth="231.0" showTickLabels="true" showTickMarks="true" />
                 <ColorPicker fx:id="colorPicker" />
