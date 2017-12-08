@@ -20,12 +20,27 @@ public class Image {
         this.img = img;
     }
 
-    public Image(int id, ResizableCanvas canvas)  {
+    public Image(int id, File img, File thumbnail) {
         this.ID = id;
+        this.img = img;
+        this.thumbnail = thumbnail;
+    }
+
+    public Image(int id, ResizableCanvas canvas)  {
+
+        this.ID = id;
+
         try {
             this.img = ImageDAO.saveToFile(canvas);
         } catch (Exception e) {
             System.out.println("Could not save Image!");
+            e.printStackTrace();
+        }
+
+        try {
+            this.thumbnail = ImageDAO.getThumbnail(this.img);
+        } catch (Exception e) {
+            System.out.println("Could not save Thumbnail!");
             e.printStackTrace();
         }
     }
@@ -35,10 +50,18 @@ public class Image {
     }
 
     public Image(ResizableCanvas canvas) {
+
         try {
             this.img = ImageDAO.saveToFile(canvas);
         } catch (Exception e) {
             System.out.println("Could not save Image!");
+            e.printStackTrace();
+        }
+
+        try {
+            this.thumbnail = ImageDAO.getThumbnail(this.img);
+        } catch (Exception e) {
+            System.out.println("Could not save Thumbnail!");
             e.printStackTrace();
         }
     }
