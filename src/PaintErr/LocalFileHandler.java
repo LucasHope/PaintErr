@@ -22,11 +22,11 @@ public class LocalFileHandler {
                 new File(System.getProperty("user.home"))
         );
 
-        // Set the possible save extensions
+        // Set the possible file load extensions
         fc.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("All Images", "*.*"),
+                new FileChooser.ExtensionFilter("PNG", "*.png"),
                 new FileChooser.ExtensionFilter("JPG", "*.jpg"),
-                new FileChooser.ExtensionFilter("PNG", "*.png")
+                new FileChooser.ExtensionFilter("All Images", "*.*")
         );
 
         // Show the Open-dialog
@@ -43,6 +43,13 @@ public class LocalFileHandler {
         fc.setTitle("Save Image Locally");
         fc.setInitialDirectory(
                 new File(System.getProperty("user.home"))
+        );
+
+        // Set the possible save extensions
+        fc.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("PNG", "*.png"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("All Images", "*.*")
         );
 
         // Show the Save-dialog
