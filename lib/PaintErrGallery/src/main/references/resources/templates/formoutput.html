@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Thymeleaf form output</title>
+
+    <meta charset="UTF-8" />
+
+    <!--Tyylitiedosto resources/static/css -hakemistoon, löytyy automaagisesti-->
+    <link rel="stylesheet" href="tyyli.css" th:href="@{/css/tyyli.css}"/>
+
+</head>
+
+<body>
+
+    <div id="content">
+
+        <h1>Printout</h1>
+
+        <br/>
+        <hr/>
+        <br/>
+
+        <form style="width: 450px">
+            <fieldset>
+
+                <legend>Your information</legend>
+
+                <table>
+                    <tr>
+                        <td style="width: 175px">Person: </td>
+                        <td><span th:text=" ${hlo.nimi} + ', alias ' + ${hlo.nimimerkki} "></span></td>
+                    </tr>
+                    <tr>
+                        <td>Height (cm), weigth (kg): </td>
+                        <td><span th:text=" ${hlo.pituus} + ' / ' + ${hlo.paino} "></span></td>
+                    </tr>
+                    <tr>
+                        <td>BMI: </td>
+                        <td><span th:text=" ${hlo.bmi} "></span></td>
+                    </tr>
+                </table>
+
+            </fieldset>
+        </form>
+
+        <br/>
+        <hr/>
+        <br/>
+
+        <p>Back to the <a href="/forminput">input form</a>!</p>
+
+    </div>
+
+    <script src="js/nav.js"></script>
+
+</body>
+
+</html>

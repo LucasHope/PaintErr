@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Paint_Err Gallery</title>
+
+    <meta charset="UTF-8" />
+
+    <link rel="stylesheet" href="css/style.css"/>
+
+</head>
+
+<body>
+
+<div id="content">
+
+
+        <h1>Paint_Err Gallery, all pictures and ID's</h1>
+
+        <br/>
+        <hr/>
+        <br/>
+
+        <ul style="font-size: 200%; list-style: none;">
+
+            <th:block th:each=" img : ${images} ">
+                <li th:with="src=${'data:image/png;charset=utf-8;base64,' + img.img}">
+                    ID: <span th:text="${img.ID}">ID</span>: <span th:text="${img.name}">Name</span> <br/>
+                    <span th:text="${img.description}">Description</span> <br/>
+                    <img src="#" th:src="${src}" style="width: 40%;"/>
+                </li>
+            </th:block>
+
+        </ul>
+
+</div>
+
+<script src="js/nav.js"></script>
+
+</body>
+
+</html>

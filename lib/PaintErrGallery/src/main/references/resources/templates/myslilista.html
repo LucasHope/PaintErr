@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Thymeleaf MySQL list</title>
+
+    <meta charset="UTF-8" />
+
+    <link rel="stylesheet" href="css/tyyli.css"/>
+
+</head>
+
+<body>
+
+<div id="content">
+
+    <h1>List of countries:</h1>
+
+    <br/>
+    <hr/>
+    <br/>
+
+    <ol style="font-size: 150%;">
+
+        <th:block th:each=" c : ${countries} ">
+            <li><span th:text="${c.toString()}">Country</span></li>
+        </th:block>
+
+    </ol>
+
+</div>
+
+<script src="js/nav.js"></script>
+
+</body>
+
+</html>

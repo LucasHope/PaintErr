@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+
+        <title>Terve Thymeleaf</title>
+
+        <meta charset="UTF-8" />
+
+        <!--Tyylitiedosto resources/static/css -hakemistoon, löytyy automaagisesti-->
+        <link rel="stylesheet" href="tyyli.css" th:href="@{/css/tyyli.css}"/>
+
+    </head>
+
+    <body>
+
+        <div id="content">
+
+            <h1>Terve, terve. Haluatko, että sinua tervehditään?</h1>
+            <p style="font-weight: bold;" th:text="'Terve, ' + ${nimi} + '! ' + 'Vai haluatko mieluummin, että sinua kutsutaan nimellä ' + ${nimim} + '?'" />
+
+            <br/>
+            <hr/>
+            <br/>
+
+            <form style="width: 300px" action="/tervehdi" method="post"><fieldset>
+
+                <legend>Tervehdys</legend>
+
+                <table>
+                    <tr>
+                        <td style="width: 100px"><label for="nimi">Nimi</label></td>
+                        <td><input type="text" id="nimi" name="nimi"/></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100px"><label for="nimim">Nimimerkki</label></td>
+                        <td><input type="text" id="nimim" name="nimim"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Tervehdi!"/></td>
+                    </tr>
+                </table>
+
+            </fieldset></form>
+
+        </div>
+
+        <script src="js/nav.js"></script>
+
+    </body>
+
+</html>

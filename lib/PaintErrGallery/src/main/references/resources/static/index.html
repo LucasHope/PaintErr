@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Thymeleaf</title>
+
+    <meta charset="UTF-8" />
+
+    <link rel="stylesheet" href="css/tyyli.css"/>
+
+</head>
+
+<body>
+
+    <div id="content">
+
+        <h1>What do you want to do?</h1>
+
+        <br/>
+        <hr/>
+        <br/>
+
+        <ul style="font-size: 200%">
+
+            <li><a href="/tervehdi">Self-Hello</a></li>
+            <li><a href="/forminput">Form and returning the inputted info</a></li>
+            <li><a href="/counter">Counter</a></li>
+            <li><a href="/customerlist">List of customers</a></li>
+            <li><a href="/countrylist">List of countries</a></li>
+            <li><a href="/insult">Insult</a></li>
+            <li><a href="/aforisms">Aforisms</a></li>
+
+        </ul>
+
+    </div>
+
+    <div th:include="nav :: nav"></div>
+    <script src="js/nav.js"></script>
+
+</body>
+
+</html>

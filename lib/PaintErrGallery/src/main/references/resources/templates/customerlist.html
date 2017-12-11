@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Thymeleaf customerlist</title>
+
+    <meta charset="UTF-8" />
+
+    <link rel="stylesheet" href="css/tyyli.css"/>
+
+</head>
+
+<body>
+
+    <div id="content">
+
+        <h1>List of customers:</h1>
+
+        <br/>
+        <hr/>
+        <br/>
+
+        <ul style="font-size: 150%;">
+            <th:block th:each=" c : ${customers} ">
+                <li>ID <span th:text="${c.toString()}">Template</span></li>
+            </th:block>
+
+
+        </ul>
+
+    </div>
+
+    <script src="js/nav.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Thymeleaf REST Aforisms</title>
+
+    <meta charset="UTF-8"/>
+
+    <link rel="stylesheet" href="css/tyyli.css"/>
+
+    <style>
+
+    </style>
+
+</head>
+
+<body>
+
+<div id="content">
+
+    <h1>List of Aforisms:</h1>
+
+    <br/>
+    <hr/>
+    <br/>
+
+    <div id="left" style="width: 45%; float: left;">
+
+        <ul style="list-style: none; font-size: 150%;">
+
+            <th:block th:each=" a : ${aforismlist} ">
+                <li><p>
+                    #<span th:text="${a.getId()}">ID</span>
+                    <i> - <span th:text="${a.getAuthor()}">Author</span></i><br/>
+                    "<span th:text="${a.getText()}">Text</span>"
+                </p></li>
+            </th:block>
+
+        </ul>
+
+    </div>
+
+    <div id="right" style="width: 45%; float: right;">
+
+        <form style="width: 90%;" action="/aforisms" method="GET">
+            <fieldset>
+
+                <legend>Find an aforism</legend>
+
+                <table>
+                    <tr>
+                        <td style="width: 30%;"><input type="text" name="nr" placeholder="Enter Aforism #"/></td>
+                        <td><input class="refresh" type="submit" value="Search chosen aforism"/></td>
+                        <td><a href="/aforisms"><button>Show all aforisms</button></a></td>
+                    </tr>
+                </table>
+
+            </fieldset>
+        </form>
+
+        <br/>
+
+        <form style="width: 90%;" action="/aforisms" method="POST" class="refresh">
+            <fieldset>
+
+                <legend>Delete an aforism</legend>
+
+                <input type="hidden" name="type" value="delete"/>
+
+                <table>
+                    <tr>
+                        <td style="width: 30%;"><input type="text" name="nr" placeholder="Enter Aforism #"/></td>
+                        <td><input class="refresh" type="submit" value="Delete chosen aforism"/></td>
+                    </tr>
+                </table>
+
+            </fieldset>
+        </form>
+
+        <br/>
+
+        <form style="width: 90%;" action="/aforisms" method="POST" class="refresh">
+            <fieldset>
+
+                <legend>Modify an aforism</legend>
+
+                <input type="hidden" name="type" value="put"/>
+
+                <table>
+                    <tr>
+                        <td><label for="modauthor">Author: </label></td>
+                        <td><input type="text" id="modauthor" name="author" placeholder="Enter author"/></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 30%;"><label for="modtext">Aforism text: </label></td>
+                        <td style="width: 65%;"><textarea id="modtext" name="text"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><label for="modnr">Aforism number: </label></td>
+                        <td><input type="text" id="modnr" name="nr" placeholder="Enter Aforism #"/></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input class="refresh" type="submit" value="Modify chosen aforism"/></td>
+                    </tr>
+                </table>
+
+            </fieldset>
+        </form>
+
+        <br/>
+
+        <form style="width: 90%;" action="/aforisms" method="POST" class="refresh">
+            <fieldset>
+
+                <legend>Insert a new Aforism</legend>
+
+                <input type="hidden" name="type" value="post"/>
+
+                <table>
+                    <tr>
+                        <td><label for="author">Author: </label></td>
+                        <td><input type="text" id="author" name="author" placeholder="Enter author"/></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 30%;"><label for="text">Aforism text: </label></td>
+                        <td style="width: 75%;"><textarea id="text" name="text"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Add the aforism"/></td>
+                    </tr>
+                </table>
+
+            </fieldset>
+        </form>
+
+    </div>
+
+</div>
+
+<!--
+<script>
+    document.getElementsByClassName("refresh").submit(function() {
+        $.post('load.php', $('#formname').serialize(), function(data) {
+            if(data == '1') {
+                window.location.reload();
+            }
+        });
+        return false;
+    });
+
+    document.getElementsByClassName("refresh").onsubmit = function(){
+        location.reload(true);
+    }
+</script>
+-->
+
+<script src="js/nav.js"></script>
+
+</body>
+
+</html>
