@@ -25,9 +25,9 @@
         <ul style="font-size: 200%; list-style: none;">
 
             <th:block th:each=" img : ${images} ">
-                <li th:with="src=${'data:image/png;charset=utf-8;base64,' + img.img}">
-                    ID: <span th:text="${img.ID}">ID</span>: <span th:text="${img.name}">Name</span> <br/>
-                    <span th:text="${img.description}">Description</span> <br/>
+                <li th:with="src=${'data:image/png;charset=utf-8;base64,' + img.Img}">
+                    ID <span th:text="${img.ID}">ID</span>: <span th:text="${img.Name}">Name</span> <br/>
+                    <span th:text="${img.Description}">Description</span> <br/>
                     <img src="#" th:src="${src}" style="width: 40%;"/>
                 </li>
             </th:block>

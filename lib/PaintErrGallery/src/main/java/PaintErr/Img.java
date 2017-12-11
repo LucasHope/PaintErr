@@ -5,7 +5,7 @@ import java.sql.Blob;
 public class Img {
 
     int ID;
-    String name = "", description = "";
+    String name, description;
     Blob thumbnail = null, img = null;
 
     public Img() { }

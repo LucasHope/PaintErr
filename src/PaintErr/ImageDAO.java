@@ -113,6 +113,30 @@ public class ImageDAO {
         return list;
     }
 
+    // to check if the ID is already in the database
+    public static boolean doesIDExist(int id) throws SQLException {
+
+        // try for a connection, in case of error return an empty object
+        try {
+            con = DriverManager.getConnection(url, u, p);
+        } catch (SQLException ex) {
+            System.out.println("Could not connect to database!");
+            return false;
+        }
+
+        // query for a specific record
+        String sql = "SELECT * FROM img WHERE ID=?;";
+
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()){
+            return true;
+        }
+        return false;
+    }
+
     // to get one Image record from the database, identified by ID
     public static Image getById(int id) throws SQLException, IOException {
 
@@ -210,34 +234,34 @@ public class ImageDAO {
             if (i.getID() == 0) {
 
                 // create statement to create a new record
-//                String sql = "INSERT img (name, description, thumbnail, img) VALUES (?, ?, ?, ?);";
-                String sql = "INSERT img (img, thumbnail) VALUES (?, ?);";
+                String sql = "INSERT img (name, description, thumbnail, img) VALUES (?, ?, ?, ?);";
+//                String sql = "INSERT img (img, thumbnail) VALUES (?, ?);";
 
                 PreparedStatement ps = con.prepareStatement(sql);
 
-//                ps.setString(1, name);
-//                ps.setString(2, description);
-//                ps.setBinaryStream(3, thumbnailInput, (int)thumbnail.length());
-//                ps.setBinaryStream(4, imgInput, (int)img.length());
+                ps.setString(1, i.getName());
+                ps.setString(2, i.getDescription());
+                ps.setBinaryStream(3, thumbInput, (int)thumbnail.length());
+                ps.setBinaryStream(4, imgInput, (int)img.length());
 
-                ps.setBinaryStream(1, imgInput, (int)img.length());
-                ps.setBinaryStream(2, thumbInput, (int)thumbnail.length());
+//                ps.setBinaryStream(1, imgInput, (int)img.length());
+//                ps.setBinaryStream(2, thumbInput, (int)thumbnail.length());
 
                 result = ps.executeUpdate();
 
             } else {
 
                 // update statement to update an existing record in database
-//                String sql = "UPDATE img SET name = ?, description = ?, thumbnail = ?, img = ? WHERE ID=?;";
-                String sql = "UPDATE img SET img = ?, thumbnail = ? WHERE ID=?;";
+                String sql = "UPDATE img SET name = ?, description = ?, thumbnail = ?, img = ? WHERE ID=?;";
+//                String sql = "UPDATE img SET img = ?, thumbnail = ? WHERE ID=?;";
 
                 PreparedStatement ps = con.prepareStatement(sql);
 
-//                ps.setString(1, i.getName());
-//                ps.setString(2, i.getDescription());
-//                ps.setBinaryStream(3, thumbnailInput, (int)thumbnail.length());
-//                ps.setBinaryStream(4, imgInput, (int)img.length());
-//                ps.setInt(5, i.getID());
+                ps.setString(1, i.getName());
+                ps.setString(2, i.getDescription());
+                ps.setBinaryStream(3, thumbInput, (int)thumbnail.length());
+                ps.setBinaryStream(4, imgInput, (int)img.length());
+                ps.setInt(5, i.getID());
 
                 ps.setBinaryStream(1, imgInput, (int)img.length());
                 ps.setBinaryStream(2, thumbInput, (int)thumbnail.length());

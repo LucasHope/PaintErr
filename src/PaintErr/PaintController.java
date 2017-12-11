@@ -43,7 +43,9 @@ public class PaintController {
 
     private PaintErr.Image activeImage;
 
-    public Image getSnapshot(){return lastSnapshot;}
+    public Image getSnapshot() {
+        return lastSnapshot;
+    }
 
     public PaintErr.Image getActiveImage() {
         return activeImage;
@@ -68,12 +70,12 @@ public class PaintController {
         colorPicker.setOnAction(event -> gc.setStroke(colorPicker.getValue()));
 
         //set new brushsize when chosen
-        slider.valueProperty().addListener(e-> gc.setLineWidth(slider.getValue()));
+        slider.valueProperty().addListener(e -> gc.setLineWidth(slider.getValue()));
 
         //start with path when clicked
         canvas.setOnMousePressed(event -> {
             double size = slider.getValue();
-            if(eraser.isSelected()) {
+            if (eraser.isSelected()) {
                 gc.clearRect(event.getX(), event.getY(), size, size);
             } else {
                 gc.beginPath();
@@ -86,7 +88,7 @@ public class PaintController {
         canvas.setOnMouseDragged(e -> {
             double size = slider.getValue();
 
-            if(eraser.isSelected()) {
+            if (eraser.isSelected()) {
                 gc.clearRect(e.getX(), e.getY(), size, size);
             } else {
                 gc.lineTo(e.getX(), e.getY());
@@ -96,20 +98,21 @@ public class PaintController {
         });
 
         //Clear all button will 'clear all'
-        button.setOnAction(e->{
-            gc.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
+        button.setOnAction(e -> {
+            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         });
 
     }
 
     //Called from application, draws wanted image on canvas
-    void setCanvas( Image img) {
+    void setCanvas(Image img) {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.drawImage(img, 0, 0, canvas.getWidth(), canvas.getHeight());
 
     }
+
     //delete temporary files
     private void clearImgFolder() {
 
@@ -120,7 +123,7 @@ public class PaintController {
 
         for (File f : files) {
             String filename = f.getName();
-            if(f.isFile() && "png".equals(filename.substring(filename.length() - 3))) {
+            if (f.isFile() && "png".equals(filename.substring(filename.length() - 3))) {
                 f.delete();
             }
         }
@@ -129,12 +132,12 @@ public class PaintController {
     //Menubar actions:
 
     // Open a new picture to be drawn on
-    public void onNew(){
+    public void onNew() {
 
         //clear activeimage and canvas
         activeImage = null;
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
     }
 
@@ -185,52 +188,6 @@ public class PaintController {
 
     }
 
-    private int queryID() {
-
-        int id;
-
-        // Show a popup to ask for the database ID of the Image as an int
-        String parseable = "";
-
-        // Query for the ID input
-        TextInputDialog dialog = new TextInputDialog("0");
-
-        dialog.setTitle("Enter Image ID");
-        dialog.setHeaderText("Enter Image ID");
-        dialog.setContentText("Please input the database ID for the image in question:");
-
-        Optional<String> result = dialog.showAndWait();
-
-        // Traditional way to get the response value.
-        if (result.isPresent()){
-
-            parseable = result.get();
-
-        }
-
-//        // The Java 8 (lambda) to get the response
-//        result.ifPresent(input -> parseable = input);
-
-        try {
-
-            id = Integer.parseInt(parseable);
-
-        } catch (NumberFormatException e) {
-
-            Alert alert = new Alert(AlertType.INFORMATION);
-
-            alert.setTitle("Please note!");
-            alert.setHeaderText("You did not input a proper number. Will execute default (save as new or load a blank canvas).");
-            alert.setContentText("");
-
-            alert.showAndWait();
-
-            return 0;
-        }
-
-        return id;
-    }
-
     // save image to database
     public void onSave() {
 
@@ -242,6 +199,8 @@ public class PaintController {
                 ImageDAO.saveImg(activeImage);
             } else {
                 PaintErr.Image i = new PaintErr.Image(canvas);
+                i.setName(queryString("author"));
+                i.setDescription(queryString("desc"));
                 ImageDAO.saveImg(i);
             }
 
@@ -257,9 +216,23 @@ public class PaintController {
         int id = queryID();
 
         PaintErr.Image i = null;
+        try {
 
-        if (id > 0) i = new PaintErr.Image(id, canvas);
-        else i = new PaintErr.Image(canvas);
+            if (ImageDAO.doesIDExist(id)) {
+                i = ImageDAO.getById(id);
+                i.setImg(ImageDAO.saveToFile(canvas));
+                i.setThumbnail(ImageDAO.getThumbnail(i.getImg()));
+                activeImage = i;
+            } else {
+                activeImage = null;
+                i = new PaintErr.Image(canvas);
+                i.setName(queryString("author"));
+                i.setDescription(queryString("desc"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             ImageDAO.saveImg(i);
@@ -303,6 +276,80 @@ public class PaintController {
         //delete temp and exit
         clearImgFolder();
         Platform.exit();
+
+    }
+
+    private int queryID() {
+
+        int id;
+
+        // Show a popup to ask for the database ID of the Image as an int
+        String parseable = "";
+
+        // Query for the ID input
+        TextInputDialog dialog = new TextInputDialog("0");
+
+        dialog.setTitle("Enter Image ID");
+        dialog.setHeaderText("Enter Image ID");
+        dialog.setContentText("Please input the database ID for the image in question:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        // Traditional way to get the response value.
+        if (result.isPresent()) {
+
+            parseable = result.get();
+
+        }
+
+//        // The Java 8 (lambda) to get the response
+//        result.ifPresent(input -> parseable = input);
+
+        try {
+
+            id = Integer.parseInt(parseable);
+
+        } catch (NumberFormatException e) {
+
+            Alert alert = new Alert(AlertType.INFORMATION);
+
+            alert.setTitle("Please note!");
+            alert.setHeaderText("You did not input a proper number. Will execute default (save as new or load a blank canvas).");
+            alert.setContentText("");
+
+            alert.showAndWait();
+
+            return 0;
+        }
+
+        return id;
+    }
+
+    // Show a popup to ask for a string input
+    private String queryString(String mode) {
+
+        String input = "";
+
+        TextInputDialog dialog = new TextInputDialog("");
+
+        dialog.setTitle("More information about the image");
+
+        if ("author".equals(mode)) {
+            dialog.setHeaderText("Who are you?");
+            dialog.setContentText("Please input the name of the author:");
+        } else {
+            dialog.setHeaderText("What does this represent?");
+            dialog.setContentText("Please input a description of the image:");
+        }
+
+        Optional<String> result = dialog.showAndWait();
+
+        // Traditional way to get the response value.
+        if (result.isPresent()) {
+            input = result.get();
+        }
+
+        return input;
 
     }
 
