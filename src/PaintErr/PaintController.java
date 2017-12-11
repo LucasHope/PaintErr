@@ -7,8 +7,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.control.Alert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
+import java.util.Optional;
 
 import static PaintErr.PaintApplication.stage;
 
@@ -124,7 +128,9 @@ public class PaintController {
 
     //Menubar actions:
 
+    // Open a new picture to be drawn on
     public void onNew(){
+
         //clear activeimage and canvas
         activeImage = null;
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -150,7 +156,79 @@ public class PaintController {
 
         // TODO
         // Query for ID
+        int id = queryID();
+
         // Open the Image from database with ImageDAO.getById(id)
+        PaintErr.Image img = null;
+
+        try {
+
+            img = ImageDAO.getById(id);
+
+            if (img == null) {
+                onNew();
+                return;
+            }
+
+            activeImage = img;
+
+            //set loaded image to canvas
+            Image canvasImage = new Image(img.getImg().toURI().toString());
+            setCanvas(canvasImage);
+
+        } catch (Exception e) {
+
+            System.out.println("Could not load image from database. Opening a new Image to draw.");
+            onNew();
+
+        }
+
+    }
+
+    private int queryID() {
+
+        int id;
+
+        // Show a popup to ask for the database ID of the Image as an int
+        String parseable = "";
+
+        // Query for the ID input
+        TextInputDialog dialog = new TextInputDialog("0");
+
+        dialog.setTitle("Enter Image ID");
+        dialog.setHeaderText("Enter Image ID");
+        dialog.setContentText("Please input the database ID for the image in question:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        // Traditional way to get the response value.
+        if (result.isPresent()){
+
+            parseable = result.get();
+
+        }
+
+//        // The Java 8 (lambda) to get the response
+//        result.ifPresent(input -> parseable = input);
+
+        try {
+
+            id = Integer.parseInt(parseable);
+
+        } catch (NumberFormatException e) {
+
+            Alert alert = new Alert(AlertType.INFORMATION);
+
+            alert.setTitle("Please note!");
+            alert.setHeaderText("You did not input a proper number. Will execute default (save as new or load a blank canvas).");
+            alert.setContentText("");
+
+            alert.showAndWait();
+
+            return 0;
+        }
+
+        return id;
     }
 
     // save image to database
@@ -171,6 +249,25 @@ public class PaintController {
             System.out.println("failed to save .png");
             e.printStackTrace();
         }
+    }
+
+    // Save image to database with a specific ID
+    public void onSaveByID() {
+
+        int id = queryID();
+
+        PaintErr.Image i = null;
+
+        if (id > 0) i = new PaintErr.Image(id, canvas);
+        else i = new PaintErr.Image(canvas);
+
+        try {
+            ImageDAO.saveImg(i);
+        } catch (Exception e) {
+            System.out.println("failed to save to that ID");
+            e.printStackTrace();
+        }
+
     }
 
     // Save image to a local file
