@@ -1,8 +1,6 @@
 package PaintErr;
 
-import PaintErr.Image;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Scene;
 import javafx.scene.image.WritableImage;
 
 import javax.imageio.ImageIO;

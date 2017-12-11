@@ -1,13 +1,10 @@
 package PaintErr;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -55,6 +52,7 @@ public class PaintApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         //Load paint.fxml
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Paint.fxml"));
         Parent root = loader.load();
@@ -95,6 +93,7 @@ public class PaintApplication extends Application {
     }
 
     public void editOldPicture(PaintErr.Image image){
+
         stage.setScene(scene);
         //set active image object to prevent multiple files
         paintController.setActiveImage(image);
@@ -102,9 +101,7 @@ public class PaintApplication extends Application {
         Image canvasImage = new Image(image.getImg().toURI().toString());
         paintController.setCanvas(canvasImage);
 
-
     }
-
 
     private void makeButtons(VBox vBox){
         HBox imageHbox = new HBox(10);
@@ -133,10 +130,12 @@ public class PaintApplication extends Application {
                     PaintErr.Image imageObject = list.get(i);
                     File img = list.get(i).getThumbnail();
                     Image image = new Image(img.toURI().toString());
+
                     //make buttons
                     imageButtons[counter] = new ImageButton(imageObject);
                     imageButtons[counter].setGraphic(new ImageView(image));
                     imageButtons[counter].setOnAction(event -> editOldPicture(imageObject));
+
                     imageHbox.getChildren().add(imageButtons[counter]);
 
                     counter++;
@@ -146,6 +145,7 @@ public class PaintApplication extends Application {
                 vBox.getChildren().add(imageHbox);
 
             } else {
+
                 int counter = 0;
                 for (int i = list.size() - 1; i >= 0; i--) {
 
@@ -153,9 +153,11 @@ public class PaintApplication extends Application {
                     PaintErr.Image imageObject = list.get(i);
                     File img = list.get(i).getThumbnail();
                     Image image = new Image(img.toURI().toString());
+
                     imageButtons[counter] = new ImageButton(imageObject);
                     imageButtons[counter].setGraphic(new ImageView(image));
                     imageButtons[counter].setOnAction(event -> editOldPicture(imageObject));
+
                     imageHbox.getChildren().add(imageButtons[counter]);
 
                     counter++;

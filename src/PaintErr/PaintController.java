@@ -1,20 +1,14 @@
 package PaintErr;
 
 import javafx.application.Platform;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.IOException;
 
 import static PaintErr.PaintApplication.stage;
 
@@ -103,7 +97,6 @@ public class PaintController {
 
         });
 
-
     }
 
     //Called from application, draws wanted image on canvas
@@ -141,6 +134,8 @@ public class PaintController {
 
     // Load local image as a File and add it to the current canvas
     public void onLocalOpen() {
+
+        activeImage = null;
 
         File img = fileHandler.openLocalImage();
 

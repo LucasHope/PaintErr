@@ -2,9 +2,6 @@ package PaintErr;
 
 // Entity-class, "img"-table @ DB
 
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-
 import java.io.File;
 
 public class Image {
