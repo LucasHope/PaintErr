@@ -19,12 +19,21 @@
         <VBox>
 
             <MenuBar fx:id="menuBar">
-                <Menu text="File">
-                    <MenuItem onAction="#onNew" text="New" />
-                    <MenuItem onAction="#onSave" text="Save" />
-                    <MenuItem onAction="#onExit" text="Exit" />
-                    <MenuItem onAction="#onWelcome" text="Back to start"/>
-                </Menu>
+
+                    <Menu text="New/Open">
+                        <MenuItem onAction="#onNew" text="New Image" />
+                        <MenuItem onAction="#onLocalOpen" text="Open from Computer..." />
+                        <MenuItem onAction="#onLoad" text="Open from Database..." />
+                    </Menu>
+                    <Menu text="Save">
+                        <MenuItem onAction="#onLocalSave" text="Save to Computer..." />
+                        <MenuItem onAction="#onSave" text="Save to Database" />
+                    </Menu>
+                    <Menu text="Close">
+                        <MenuItem onAction="#onWelcome" text="Back to the Menu" />
+                        <MenuItem onAction="#onExit" text="Exit program" />
+                    </Menu>
+                
             </MenuBar>
 
             <ToolBar >

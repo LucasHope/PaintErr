@@ -43,6 +43,8 @@ public class PaintController {
 
     private PaintErr.Image activeImage;
 
+    public Image getSnapshot(){return lastSnapshot;}
+
     public PaintErr.Image getActiveImage() {
         return activeImage;
     }
@@ -102,6 +104,45 @@ public class PaintController {
 
     }
 
+    //Called from application, draws wanted image on canvas
+    void setCanvas( Image img) {
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.drawImage(img, 0, 0, canvas.getWidth(), canvas.getHeight());
+
+    }
+    //delete temporary files
+    private void clearImgFolder() {
+
+        File imgFolder = new File("./src/img/");
+        File[] files = imgFolder.listFiles();
+
+        if (files == null) return;
+
+        for (File f : files) {
+            String filename = f.getName();
+            if(f.isFile() && "png".equals(filename.substring(filename.length() - 3))) {
+                f.delete();
+            }
+        }
+    }
+
+    //Menubar actions:
+
+    public void onNew(){
+        //clear activeimage and canvas
+        activeImage = null;
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+
+    }
+
+    public void onWelcome() throws Exception {
+        //start again
+        PaintApplication paintApplication = new PaintApplication();
+        paintApplication.start(stage);
+    }
+
     public void onSave() {
 
         try {
@@ -119,46 +160,6 @@ public class PaintController {
             System.out.println("failed to save .png");
             e.printStackTrace();
         }
-    }
-
-    void setCanvas( Image img) {
-
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.drawImage(img, 0, 0, canvas.getWidth(), canvas.getHeight());
-
-    }
-
-    Image getSnapshot(){return lastSnapshot;}
-
-    private void clearImgFolder() {
-
-        File imgFolder = new File("./src/img/");
-        File[] files = imgFolder.listFiles();
-
-        if (files == null) return;
-
-        for (File f : files) {
-            String filename = f.getName();
-            if(f.isFile() && "png".equals(filename.substring(filename.length() - 3))) {
-                f.delete();
-            }
-        }
-    }
-
-    //Menubar actions
-
-    public void onNew(){
-        //clear activeimage and canvas
-        activeImage = null;
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
-
-    }
-
-    public void onWelcome() throws Exception {
-        //start again
-        PaintApplication paintApplication = new PaintApplication();
-        paintApplication.start(stage);
     }
 
     public void onExit() {
