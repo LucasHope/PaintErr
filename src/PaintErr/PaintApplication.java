@@ -32,6 +32,8 @@ public class PaintApplication extends Application {
 
     private static Stage primaryStage;
 
+    static Stage stage;
+
     public PaintApplication() {
         try {
             scene = new Scene(FXMLLoader.load(getClass().getResource("Paint.fxml")));
@@ -55,6 +57,7 @@ public class PaintApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         setPrimaryStage(primaryStage);
+        stage = PaintApplication.getPrimaryStage();
 
         VBox vBox = new VBox(20);
         vBox.setAlignment(Pos.CENTER);
@@ -84,8 +87,6 @@ public class PaintApplication extends Application {
 
     private void editOldPicture(PaintErr.Image image){
         Canvas c = new Canvas();
-
-        Stage stage = PaintApplication.getPrimaryStage();
 
         try {
             stage.setScene(scene = new Scene(FXMLLoader.load(getClass().getResource("Paint.fxml"))));
@@ -133,16 +134,21 @@ public class PaintApplication extends Application {
                 vBox.getChildren().add(imageHbox);
 
             } else {
-                for (int i = list.size() - 1; i > 0; i--) {
+                int counter = 0;
+                for (int i = list.size() - 1; i >= 0; i--) {
 
+                    PaintErr.Image imageObject = list.get(i);
                     File img = list.get(i).getThumbnail();
                     Image image = new Image(img.toURI().toString());
+                    imageButtons[counter] = new ImageButton(imageObject);
+                    imageButtons[counter].setGraphic(new ImageView(image));
+                    imageButtons[counter].setOnAction(event -> editOldPicture(imageObject));
+                    imageHbox.getChildren().add(imageButtons[counter]);
 
-                    imageHbox.getChildren().add(new ImageView(image));
-
-                }
-                vBox.getChildren().add(imageHbox);
+                    counter++;
             }
-        }
+                vBox.getChildren().add(imageHbox);
+
+            }
     }
-}
+}}

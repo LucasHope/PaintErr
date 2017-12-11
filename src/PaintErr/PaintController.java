@@ -85,8 +85,6 @@ public class PaintController {
 
     }
 
-    String title = "paint_err";
-
     public void onSave() {
 
         try {
