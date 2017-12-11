@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -29,6 +30,8 @@ public class PaintApplication extends Application {
         return scene;
     }
 
+    private static Stage primaryStage;
+
     public PaintApplication() {
         try {
             scene = new Scene(FXMLLoader.load(getClass().getResource("Paint.fxml")));
@@ -37,63 +40,36 @@ public class PaintApplication extends Application {
         }
     }
 
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    public static void setPrimaryStage(Stage primaryStage) {
+        PaintApplication.primaryStage = primaryStage;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        setPrimaryStage(primaryStage);
+
         VBox vBox = new VBox(20);
         vBox.setAlignment(Pos.CENTER);
-        HBox imageHbox = new HBox(10);
-        imageHbox.setAlignment(Pos.CENTER);
 
         Label label = new Label("This is the welcome page. Not much to see yet, but please do go on by clicking this button:");
-        Canvas canvas = new Canvas(500,500);
-        Button button = new Button("Continue to Paint_err!");
-        Button[] imageButtons= new Button[4];
-        vBox.getChildren().addAll(label, button, canvas);
+//        Canvas canvas = new Canvas(500,500);
+        Button welcomeButton = new Button("Continue to Paint_err!");
+        vBox.getChildren().addAll(label, welcomeButton);
 
-        button.setOnAction(event -> {
-                primaryStage.setScene(scene);
+        welcomeButton.setOnAction(event -> primaryStage.setScene(scene));
 
-        });
-
-        List<PaintErr.Image> list = ImageDAO.getAll();
-        List<PaintErr.Image> newList = null;
-        if (!list.isEmpty()) {
-
-            if (list.size() > 3) {
-
-                int counter = 0;
-                for (int i = list.size() - 1; i > list.size() - 5; i--) {
-
-//                    newList.add(list.get(i));
-                    File img = list.get(i).getImg();
-                    Image image = new Image(img.toURI().toString(), 200,200,false,false);
-                    imageButtons[counter] = new Button();
-                    imageButtons[counter].setGraphic(new ImageView(image));
-                    imageButtons[counter].setOnAction(event -> editOldPicture(image,primaryStage));
-                    imageHbox.getChildren().add(imageButtons[counter]);
-
-                    counter++;
-                }
-
-
-            } else {
-                for (int i = list.size() - 1; i > 0; i--) {
-
-                    File img = list.get(i).getImg();
-                    Image image = new Image(img.toURI().toString(), 200,200,false,false);
-
-                    imageHbox.getChildren().add(new ImageView(image));
-
-                }
-            }
-        }
-
+        //Show old images as buttons if they exist
+        makeButtons(vBox);
         StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(vBox, imageHbox);
+        stackPane.getChildren().addAll(vBox);
         primaryStage.setScene(new Scene(stackPane, 800,700));
         primaryStage.show();
 
@@ -106,11 +82,67 @@ public class PaintApplication extends Application {
 
     }
 
-    private void editOldPicture(Image image, Stage stage){
+    private void editOldPicture(PaintErr.Image image){
         Canvas c = new Canvas();
-        stage.setScene(scene);
 
+        Stage stage = PaintApplication.getPrimaryStage();
+
+        try {
+            stage.setScene(scene = new Scene(FXMLLoader.load(getClass().getResource("Paint.fxml"))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         stage.show();
-        PaintController.setCanvas(c, image);
+        Image canvasImage = new Image(image.getImg().toURI().toString());
+        setCanvas(c, canvasImage);
+    }
+
+    private void makeButtons(VBox vBox){
+        HBox imageHbox = new HBox(10);
+        imageHbox.setAlignment(Pos.CENTER);
+
+        List<PaintErr.Image> list = null;
+        try {
+            list = ImageDAO.getAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ImageButton[] imageButtons= new ImageButton[4];
+
+        if (!list.isEmpty()) {
+
+            if (list.size() > 3) {
+
+                int counter = 0;
+                for (int i = list.size() - 1; i > list.size() - 5; i--) {
+
+//                    newList.add(list.get(i));
+                    PaintErr.Image imageObject = list.get(i);
+                    File img = list.get(i).getThumbnail();
+                    Image image = new Image(img.toURI().toString());
+                    imageButtons[counter] = new ImageButton(imageObject);
+                    imageButtons[counter].setGraphic(new ImageView(image));
+                    imageButtons[counter].setOnAction(event -> editOldPicture(imageObject));
+                    imageHbox.getChildren().add(imageButtons[counter]);
+
+                    counter++;
+                }
+
+                vBox.getChildren().add(imageHbox);
+
+            } else {
+                for (int i = list.size() - 1; i > 0; i--) {
+
+                    File img = list.get(i).getThumbnail();
+                    Image image = new Image(img.toURI().toString());
+
+                    imageHbox.getChildren().add(new ImageView(image));
+
+                }
+                vBox.getChildren().add(imageHbox);
+            }
+        }
     }
 }

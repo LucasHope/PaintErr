@@ -33,7 +33,7 @@ public class PaintController {
     private Button button;
 
     @FXML
-    private static BorderPane borderPane;
+    private BorderPane borderPane;
 
     // called automatically after Controller class instantiated
     public void initialize() {
@@ -81,7 +81,6 @@ public class PaintController {
             gc.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
 
         });
-        //Opens the example png so the user can modify it
 
 
     }
@@ -111,7 +110,7 @@ public class PaintController {
         }
     }
 
-    static void setCanvas(Canvas canvas, Image img) {
+    private void setCanvas(Canvas canvas, Image img) {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.drawImage(img, 0, 0, borderPane.getWidth(), borderPane.getHeight());
