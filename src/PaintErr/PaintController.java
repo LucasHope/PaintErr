@@ -108,10 +108,10 @@ public class PaintController {
         }
     }
 
-    private void setCanvas(Canvas canvas, Image img) {
+    void setCanvas( Image img) {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.drawImage(img, 0, 0, borderPane.getWidth(), borderPane.getHeight());
+        gc.drawImage(img, 0, 0, canvas.getWidth(), canvas.getHeight());
 
     }
 

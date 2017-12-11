@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -34,12 +35,9 @@ public class PaintApplication extends Application {
 
     static Stage stage;
 
+    static PaintController paintController;
+
     public PaintApplication() {
-        try {
-            scene = new Scene(FXMLLoader.load(getClass().getResource("Paint.fxml")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static Stage getPrimaryStage() {
@@ -56,6 +54,12 @@ public class PaintApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Paint.fxml"));
+        Parent root = loader.load();
+        paintController = (PaintController)loader.getController();
+
+        scene = new Scene(root);
+
         setPrimaryStage(primaryStage);
         stage = PaintApplication.getPrimaryStage();
 
@@ -86,16 +90,9 @@ public class PaintApplication extends Application {
     }
 
     private void editOldPicture(PaintErr.Image image){
-        Canvas c = new Canvas();
-
-        try {
-            stage.setScene(scene = new Scene(FXMLLoader.load(getClass().getResource("Paint.fxml"))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        stage.show();
+        stage.setScene(scene);
         Image canvasImage = new Image(image.getImg().toURI().toString());
-        setCanvas(c, canvasImage);
+        paintController.setCanvas(canvasImage);
     }
 
     private void makeButtons(VBox vBox){
