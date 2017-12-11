@@ -20,9 +20,10 @@
 
             <MenuBar fx:id="menuBar">
                 <Menu text="File">
-                    <MenuItem text="New" />
+                    <MenuItem onAction="#onNew" text="New" />
                     <MenuItem onAction="#onSave" text="Save" />
                     <MenuItem onAction="#onExit" text="Exit" />
+                    <MenuItem onAction="#onWelcome" text="Back to start"/>
                 </Menu>
             </MenuBar>
 

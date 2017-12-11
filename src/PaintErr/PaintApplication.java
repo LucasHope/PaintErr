@@ -25,28 +25,29 @@ import java.util.List;
 
 public class PaintApplication extends Application {
 
+    static PaintController paintController;
+
+    static Stage stage;
+
     private Scene scene;
+
+    private static Stage primaryStage;
+
+    public PaintApplication() {
+    }
+
+    public static Stage getPrimaryStage() {return primaryStage;}
+
+    public static void setPrimaryStage(Stage primaryStage) {
+        PaintApplication.primaryStage = primaryStage;
+    }
+
+    public static Stage getStage() {return stage;}
 
     public Scene getScene() {
         return scene;
     }
 
-    private static Stage primaryStage;
-
-    static Stage stage;
-
-    static PaintController paintController;
-
-    public PaintApplication() {
-    }
-
-    public static Stage getPrimaryStage() {
-        return primaryStage;
-    }
-
-    public static void setPrimaryStage(Stage primaryStage) {
-        PaintApplication.primaryStage = primaryStage;
-    }
 
     public static void main(String[] args) {
         launch(args);
@@ -54,28 +55,38 @@ public class PaintApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //Load paint.fxml
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Paint.fxml"));
         Parent root = loader.load();
+        //Set controller
         paintController = (PaintController)loader.getController();
 
+        //Make sure canvas is white
         root.setStyle("-fx-background-color: white");
+
         scene = new Scene(root);
 
+        //Make primarystage usable for other methods/classes
         setPrimaryStage(primaryStage);
+
         stage = PaintApplication.getPrimaryStage();
 
+        //Build welcome page
         VBox vBox = new VBox(20);
         vBox.setAlignment(Pos.CENTER);
 
         Label label = new Label("This is the welcome page. Not much to see yet, but please do go on by clicking this button:");
-//        Canvas canvas = new Canvas(500,500);
-        Button welcomeButton = new Button("Continue to Paint_err!");
+
+        Button welcomeButton = new Button("Start new image");
+
         vBox.getChildren().addAll(label, welcomeButton);
 
+        //Set scene for new image
         welcomeButton.setOnAction(event -> primaryStage.setScene(scene));
 
         //Show old images as buttons if they exist
         makeButtons(vBox);
+
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(vBox);
         primaryStage.setScene(new Scene(stackPane, 800,700));
@@ -83,15 +94,11 @@ public class PaintApplication extends Application {
 
     }
 
-    private void setCanvas(Canvas canvas, Image img) {
-
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.drawImage(img, 0, 0, canvas.getWidth(), canvas.getHeight());
-
-    }
-
     private void editOldPicture(PaintErr.Image image){
         stage.setScene(scene);
+        //set active image object to prevent multiple files
+        paintController.setActiveImage(image);
+        //set wanted image to canvas
         Image canvasImage = new Image(image.getImg().toURI().toString());
         paintController.setCanvas(canvasImage);
     }
@@ -100,6 +107,7 @@ public class PaintApplication extends Application {
         HBox imageHbox = new HBox(10);
         imageHbox.setAlignment(Pos.CENTER);
 
+        //Load image objects from database
         List<PaintErr.Image> list = null;
         try {
             list = ImageDAO.getAll();
@@ -108,6 +116,7 @@ public class PaintApplication extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //create for imagebuttons
         ImageButton[] imageButtons= new ImageButton[4];
 
         if (!list.isEmpty()) {
@@ -117,10 +126,11 @@ public class PaintApplication extends Application {
                 int counter = 0;
                 for (int i = list.size() - 1; i > list.size() - 5; i--) {
 
-//                    newList.add(list.get(i));
+                    //Get image, image object, and thumbnail
                     PaintErr.Image imageObject = list.get(i);
                     File img = list.get(i).getThumbnail();
                     Image image = new Image(img.toURI().toString());
+                    //make buttons
                     imageButtons[counter] = new ImageButton(imageObject);
                     imageButtons[counter].setGraphic(new ImageView(image));
                     imageButtons[counter].setOnAction(event -> editOldPicture(imageObject));
@@ -129,12 +139,14 @@ public class PaintApplication extends Application {
                     counter++;
                 }
 
+                //add buttons to vbox
                 vBox.getChildren().add(imageHbox);
 
             } else {
                 int counter = 0;
                 for (int i = list.size() - 1; i >= 0; i--) {
 
+                    //same as above, need to find a way to make this cleaner
                     PaintErr.Image imageObject = list.get(i);
                     File img = list.get(i).getThumbnail();
                     Image image = new Image(img.toURI().toString());
@@ -148,5 +160,6 @@ public class PaintApplication extends Application {
                 vBox.getChildren().add(imageHbox);
 
             }
+        }
     }
-}}
+}

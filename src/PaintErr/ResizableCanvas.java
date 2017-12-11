@@ -1,6 +1,8 @@
 package PaintErr;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.LocatorEx;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -9,23 +11,28 @@ import javafx.scene.layout.BorderPane;
 
 public class ResizableCanvas extends Canvas {
 
+    static PaintController paintController;
     public ResizableCanvas() {
 
         // Redraw canvas when size changes.
         widthProperty().addListener(evt ->{
-            draw();
+            if (!(paintController == null))
+            draw(paintController.getSnapshot());
         });
         heightProperty().addListener(evt -> {
-            draw();
+            if (!(paintController == null))
+            draw(paintController.getSnapshot());
         });
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Paint.fxml"));
+        paintController = (PaintController)loader.getController();
+
+
     }
 
-    private void draw() {
+    private void draw(Image snap) {
 
-        ResizableCanvas canvas = new ResizableCanvas();
         double width = getWidth();
         double height = getHeight();
-        javafx.scene.image.Image snap = canvas.snapshot(null, null);
 
 
         GraphicsContext gc = getGraphicsContext2D();

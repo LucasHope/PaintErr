@@ -10,10 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+
+import static PaintErr.PaintApplication.stage;
 
 public class PaintController {
 
@@ -35,12 +38,24 @@ public class PaintController {
     @FXML
     private BorderPane borderPane;
 
+    @FXML
+    private Image lastSnapshot;
+
+    private PaintErr.Image activeImage;
+
+    public PaintErr.Image getActiveImage() {
+        return activeImage;
+    }
+
+    public void setActiveImage(PaintErr.Image activeImage) {
+        this.activeImage = activeImage;
+    }
+
     // called automatically after Controller class instantiated
     public void initialize() {
-
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-//
+        //Enables canvas resizing
         canvas.widthProperty().bind(borderPane.widthProperty());
         canvas.heightProperty().bind(borderPane.heightProperty());
 
@@ -74,9 +89,11 @@ public class PaintController {
             } else {
                 gc.lineTo(e.getX(), e.getY());
                 gc.stroke();
+                lastSnapshot = canvas.snapshot(null, null);
             }
         });
 
+        //Clear all button will 'clear all'
         button.setOnAction(e->{
             gc.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
 
@@ -89,9 +106,14 @@ public class PaintController {
 
         try {
 
-            PaintErr.Image i = new PaintErr.Image(canvas);
-
-            ImageDAO.saveImg(i);
+            if (activeImage != null) {
+                activeImage.setImg(ImageDAO.saveToFile(canvas));
+                activeImage.setThumbnail(ImageDAO.getThumbnail(activeImage.getImg()));
+                ImageDAO.saveImg(activeImage);
+            } else {
+                PaintErr.Image i = new PaintErr.Image(canvas);
+                ImageDAO.saveImg(i);
+            }
 
         } catch (Exception e) {
             System.out.println("failed to save .png");
@@ -106,7 +128,42 @@ public class PaintController {
 
     }
 
+    Image getSnapshot(){return lastSnapshot;}
+
+    private void clearImgFolder() {
+
+        File imgFolder = new File("./src/img/");
+        File[] files = imgFolder.listFiles();
+
+        if (files == null) return;
+
+        for (File f : files) {
+            String filename = f.getName();
+            if(f.isFile() && "png".equals(filename.substring(filename.length() - 3))) {
+                f.delete();
+            }
+        }
+    }
+
+    //Menubar actions
+
+    public void onNew(){
+        //clear activeimage and canvas
+        activeImage = null;
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+
+    }
+
+    public void onWelcome() throws Exception {
+        //start again
+        PaintApplication paintApplication = new PaintApplication();
+        paintApplication.start(stage);
+    }
+
     public void onExit() {
+        //delete temp and exit
+        clearImgFolder();
         Platform.exit();
     }
 
