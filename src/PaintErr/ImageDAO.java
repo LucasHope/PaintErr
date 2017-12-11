@@ -258,7 +258,7 @@ public class ImageDAO {
         else return false;
     }
 
-    public static File saveToFile(ResizableCanvas canvas) throws SQLException, FileNotFoundException {
+    public static File saveToFile(ResizableCanvas canvas) throws FileNotFoundException {
 
         // Take a snapshot (WritableImage) from the given scene
         WritableImage writableImage = canvas.snapshot(null, null);

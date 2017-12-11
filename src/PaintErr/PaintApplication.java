@@ -94,14 +94,17 @@ public class PaintApplication extends Application {
 
     }
 
-    private void editOldPicture(PaintErr.Image image){
+    public void editOldPicture(PaintErr.Image image){
         stage.setScene(scene);
         //set active image object to prevent multiple files
         paintController.setActiveImage(image);
         //set wanted image to canvas
         Image canvasImage = new Image(image.getImg().toURI().toString());
         paintController.setCanvas(canvasImage);
+
+
     }
+
 
     private void makeButtons(VBox vBox){
         HBox imageHbox = new HBox(10);

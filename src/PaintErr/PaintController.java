@@ -41,6 +41,8 @@ public class PaintController {
     @FXML
     private Image lastSnapshot;
 
+    private LocalFileHandler fileHandler = new LocalFileHandler();
+
     private PaintErr.Image activeImage;
 
     public Image getSnapshot(){return lastSnapshot;}
@@ -137,12 +139,26 @@ public class PaintController {
 
     }
 
-    public void onWelcome() throws Exception {
-        //start again
-        PaintApplication paintApplication = new PaintApplication();
-        paintApplication.start(stage);
+    // Load local image as a File and add it to the current canvas
+    public void onLocalOpen() {
+
+        File img = fileHandler.openLocalImage();
+
+        //set wanted image to canvas
+        Image canvasImage = new Image(img.toURI().toString());
+        setCanvas(canvasImage);
+
     }
 
+    // Load a database image, query for the ID
+    public void onLoad() {
+
+        // TODO
+        // Query for ID
+        // Open the Image from database with ImageDAO.getById(id)
+    }
+
+    // save image to database
     public void onSave() {
 
         try {
@@ -162,10 +178,40 @@ public class PaintController {
         }
     }
 
+    // Save image to a local file
+    public void onLocalSave() {
+
+        try {
+
+            if (activeImage != null) {
+                activeImage.setImg(ImageDAO.saveToFile(canvas));
+                activeImage.setThumbnail(ImageDAO.getThumbnail(activeImage.getImg()));
+                fileHandler.saveLocalImage(activeImage);
+            } else {
+                PaintErr.Image i = new PaintErr.Image(canvas);
+                fileHandler.saveLocalImage(i);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    // Back to Welcome-scene
+    public void onWelcome() throws Exception {
+        //start again
+        PaintApplication paintApplication = new PaintApplication();
+        paintApplication.start(stage);
+    }
+
+    // Exit the program
     public void onExit() {
+
         //delete temp and exit
         clearImgFolder();
         Platform.exit();
+
     }
 
 }
