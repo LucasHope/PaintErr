@@ -41,8 +41,8 @@ public class PaintController {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
 //
-//        canvas.widthProperty().bind(borderPane.widthProperty());
-//        canvas.heightProperty().bind(borderPane.heightProperty());
+        canvas.widthProperty().bind(borderPane.widthProperty());
+        canvas.heightProperty().bind(borderPane.heightProperty());
 
 
         //set black as default
@@ -88,15 +88,6 @@ public class PaintController {
     public void onSave() {
 
         try {
-
-//            javafx.scene.image.Image snap = canvas.snapshot(null, null);
-//            File img = new File(title + ".png");
-//            ImageIO.write(SwingFXUtils.fromFXImage(snap, null), "png", img);
-//            PaintErr.Image i = new PaintErr.Image(img);
-
-            // not needed anymore; redone to utilise canvas
-//            Scene scene = button.getScene();
-//            PaintErr.Image i = new PaintErr.Image(scene);
 
             PaintErr.Image i = new PaintErr.Image(canvas);
 

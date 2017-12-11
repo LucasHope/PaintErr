@@ -58,6 +58,7 @@ public class PaintApplication extends Application {
         Parent root = loader.load();
         paintController = (PaintController)loader.getController();
 
+        root.setStyle("-fx-background-color: white");
         scene = new Scene(root);
 
         setPrimaryStage(primaryStage);
