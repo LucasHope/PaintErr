@@ -65,7 +65,7 @@
     </top>
 
     <center>
-        <ResizableCanvas fx:id="canvas" height="700" width="1200" />
+        <ResizableCanvas fx:id="canvas" height="700" width="1200" onMouseEntered="#onMouseEntered" />
     </center>
 
 </BorderPane>

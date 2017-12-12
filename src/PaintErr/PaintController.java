@@ -2,6 +2,7 @@ package PaintErr;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.ImageCursor;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -77,7 +78,7 @@ public class PaintController {
         canvas.setOnMousePressed(event -> {
             double size = slider.getValue();
             if (eraser.isSelected()) {
-                gc.clearRect(event.getX(), event.getY(), size, size);
+                gc.clearRect(event.getX() - (size/2), event.getY() - (size/2), size, size);
             } else {
                 gc.beginPath();
                 gc.lineTo(event.getX(), event.getY());
@@ -90,7 +91,7 @@ public class PaintController {
             double size = slider.getValue();
 
             if (eraser.isSelected()) {
-                gc.clearRect(e.getX(), e.getY(), size, size);
+                gc.clearRect(e.getX() - (size/2), e.getY() - (size/2), size, size);
             } else {
                 gc.lineTo(e.getX(), e.getY());
                 gc.stroke();
@@ -128,6 +129,11 @@ public class PaintController {
                 f.delete();
             }
         }
+    }
+
+    public void onMouseEntered(){
+        Image brush = new Image("resources/brush.png");
+        canvas.setCursor(new ImageCursor(brush));
     }
 
     //Menubar actions:
