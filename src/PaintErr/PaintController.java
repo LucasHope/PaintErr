@@ -70,6 +70,7 @@ public class PaintController {
         colorPicker.setOnAction(event -> gc.setStroke(colorPicker.getValue()));
 
         //set new brushsize when chosen
+        gc.setLineWidth(slider.getValue());
         slider.valueProperty().addListener(e -> gc.setLineWidth(slider.getValue()));
 
         //start with path when clicked
