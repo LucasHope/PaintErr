@@ -41,6 +41,8 @@ public class PaintController {
     @FXML
     private Image lastSnapshot;
 
+    private String brushType = "brush";
+
     private LocalFileHandler fileHandler = new LocalFileHandler();
 
     private PaintErr.Image activeImage;
@@ -80,17 +82,23 @@ public class PaintController {
         gc.setLineWidth(slider.getValue());
         slider.valueProperty().addListener(e -> gc.setLineWidth(slider.getValue()));
 
+
+        // if 'Fill' is toggled, on mouse click fill the area of clicked spot colour with the current colour
+
         //start with path when clicked
-        canvas.setOnMousePressed(event -> {
+        canvas.setOnMousePressed(e -> {
             redoStack.clear();
             double size = slider.getValue();
-
             if (eraser.isSelected()) {
-                gc.clearRect(event.getX() - (size / 2), event.getY() - (size / 2), size, size);
+                gc.clearRect(e.getX() - (size/2), e.getY() - (size/2), size, size);
             } else {
-                gc.beginPath();
-                gc.lineTo(event.getX(), event.getY());
-                gc.stroke();
+                if ("fillBrush".equals(brushType)) {
+                    PaintFunctions.fill(e.getX(), e.getY(), canvas, colorPicker.getValue());
+                } else {
+                    gc.beginPath();
+                    gc.lineTo(e.getX(), e.getY());
+                    gc.stroke();
+                }
             }
         });
 
@@ -99,10 +107,14 @@ public class PaintController {
             double size = slider.getValue();
 
             if (eraser.isSelected()) {
-                gc.clearRect(e.getX() - (size / 2), e.getY() - (size / 2), size, size);
+                gc.clearRect(e.getX() - (size/2), e.getY() - (size/2), size, size);
             } else {
-                gc.lineTo(e.getX(), e.getY());
-                gc.stroke();
+                if ("fillBrush".equals(brushType)) {
+                    PaintFunctions.fill(e.getX(), e.getY(), canvas, colorPicker.getValue());
+                } else {
+                    gc.lineTo(e.getX(), e.getY());
+                    gc.stroke();
+                }
             }
         });
 
@@ -165,6 +177,22 @@ public class PaintController {
             undoStack.add(snap);
         }
     }
+
+
+
+    // Toolbar buttons
+
+    // Toggle brush
+    public void onBrush() {
+        brushType = "brush";
+    }
+
+    // Toggle fill-brush
+    public void onFillBrush() {
+        brushType = "fillBrush";
+    }
+
+
 
     //Menubar actions:
 

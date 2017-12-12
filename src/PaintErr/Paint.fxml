@@ -36,7 +36,7 @@
                         <MenuItem onAction="#onExit" text="Exit program" />
                     </Menu>
             <VBox.margin>
-               <Insets bottom="5.0" top="5.0" />
+               <Insets />
             </VBox.margin>
                 
             </MenuBar>
@@ -53,8 +53,18 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></Button>
-                <Button fx:id="undoButton" text="Undo" onAction="#undo"/>
-                <Button fx:id="redoButton" text="Redo" onAction="#redo"/>
+                <Button fx:id="undoButton" onAction="#undo" text="Undo" />
+                <Button fx:id="redoButton" onAction="#redo" text="Redo" />
+                <Button fx:id="button1" layoutX="574.0" layoutY="17.0" onAction="#onBrush" prefHeight="31.0" prefWidth="84.0" style="-fx-padding: 5px;" text="Brush">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </Button>
+                <Button fx:id="button11" layoutX="663.0" layoutY="17.0" onAction="#onFillBrush" prefHeight="31.0" prefWidth="84.0" style="-fx-padding: 5px;" text="Fill">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </Button>
             <VBox.margin>
                <Insets />
             </VBox.margin>
@@ -67,7 +77,7 @@
     </top>
 
     <center>
-        <ResizableCanvas fx:id="canvas" height="700" width="1200" onMouseEntered="#onMouseEntered" />
+        <ResizableCanvas fx:id="canvas" height="700" onMouseEntered="#onMouseEntered" width="1200" />
     </center>
 
 </BorderPane>
