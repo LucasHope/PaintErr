@@ -87,10 +87,13 @@ public class PaintController {
 
         //start with path when clicked
         canvas.setOnMousePressed(e -> {
+
             redoStack.clear();
+            undoStack.add(canvas.snapshot(null, null));
+
             double size = slider.getValue();
             if (eraser.isSelected()) {
-                gc.clearRect(e.getX() - (size/2), e.getY() - (size/2), size, size);
+                gc.clearRect(e.getX() - (size / 2), e.getY() - (size / 2), size, size);
             } else {
                 if ("fillBrush".equals(brushType)) {
                     PaintFunctions.fill(e.getX(), e.getY(), canvas, colorPicker.getValue());
@@ -107,7 +110,7 @@ public class PaintController {
             double size = slider.getValue();
 
             if (eraser.isSelected()) {
-                gc.clearRect(e.getX() - (size/2), e.getY() - (size/2), size, size);
+                gc.clearRect(e.getX() - (size / 2), e.getY() - (size / 2), size, size);
             } else {
                 if ("fillBrush".equals(brushType)) {
                     PaintFunctions.fill(e.getX(), e.getY(), canvas, colorPicker.getValue());
@@ -119,7 +122,7 @@ public class PaintController {
         });
 
         //Take snapshot every time the mouse is released
-        canvas.setOnMouseReleased(event -> undoStack.add(canvas.snapshot(null, null)));
+//        canvas.setOnMouseReleased(event -> undoStack.add(canvas.snapshot(null, null)));
 
         //Clear all button will 'clear all'
         button.setOnAction(e -> {
@@ -162,22 +165,27 @@ public class PaintController {
 
     public void undo() {
         if (!undoStack.isEmpty() && undoStack.peekLast() != null) {
+
+            redoStack.add(canvas.snapshot(null, null));
+
             Image snap = undoStack.pollLast();
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.drawImage(snap, 0, 0, canvas.getWidth(), canvas.getHeight());
-            redoStack.add(snap);
+
         }
     }
 
     public void redo() {
         if (!redoStack.isEmpty() && redoStack.peekLast() != null) {
+
+            undoStack.add(canvas.snapshot(null, null));
+
             Image snap = redoStack.pollLast();
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.drawImage(snap, 0, 0, canvas.getWidth(), canvas.getHeight());
-            undoStack.add(snap);
+
         }
     }
-
 
 
     // Toolbar buttons
@@ -191,7 +199,6 @@ public class PaintController {
     public void onFillBrush() {
         brushType = "fillBrush";
     }
-
 
 
     //Menubar actions:

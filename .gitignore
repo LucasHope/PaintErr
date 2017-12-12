@@ -9,6 +9,7 @@ src/img/*.png
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
+lib/PaintErrGallery/.idea/workspace.xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -103,3 +104,4 @@ local.properties
 .scala_dependencies
 .worksheet
 
+/lib/PaintErrGallery/.idea/workspace.xml
