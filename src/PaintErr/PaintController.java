@@ -96,7 +96,7 @@ public class PaintController {
                 gc.clearRect(e.getX() - (size / 2), e.getY() - (size / 2), size, size);
             } else {
                 if ("fillBrush".equals(brushType)) {
-                    PaintFunctions.fill(e.getX(), e.getY(), canvas, colorPicker.getValue());
+                    PaintFunctions.fill((int)e.getX(), (int)e.getY(), canvas, colorPicker.getValue());
                 } else {
                     gc.beginPath();
                     gc.lineTo(e.getX(), e.getY());
@@ -113,7 +113,7 @@ public class PaintController {
                 gc.clearRect(e.getX() - (size / 2), e.getY() - (size / 2), size, size);
             } else {
                 if ("fillBrush".equals(brushType)) {
-                    PaintFunctions.fill(e.getX(), e.getY(), canvas, colorPicker.getValue());
+                    PaintFunctions.fill((int)e.getX(), (int)e.getY(), canvas, colorPicker.getValue());
                 } else {
                     gc.lineTo(e.getX(), e.getY());
                     gc.stroke();

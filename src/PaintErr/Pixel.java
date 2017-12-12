@@ -31,10 +31,10 @@ public class Pixel {
         this.color = color;
     }
 
-    public Pixel(int x, int y, Color color) {
+    public Pixel(int x, int y) {
 
         this.x = x;
         this.y = y;
-        this.color = color;
+
     }
 }
