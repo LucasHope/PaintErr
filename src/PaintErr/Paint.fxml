@@ -53,6 +53,8 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></Button>
+                <Button fx:id="undoButton" text="Undo" onAction="#undo"/>
+                <Button fx:id="redoButton" text="Redo" onAction="#redo"/>
             <VBox.margin>
                <Insets />
             </VBox.margin>

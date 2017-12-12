@@ -13,6 +13,7 @@ import javafx.scene.control.Alert.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.util.ArrayDeque;
 import java.util.Optional;
 
 import static PaintErr.PaintApplication.stage;
@@ -44,6 +45,10 @@ public class PaintController {
 
     private PaintErr.Image activeImage;
 
+    private ArrayDeque<Image> undoStack = new ArrayDeque<>();
+
+    private ArrayDeque<Image> redoStack = new ArrayDeque<>();
+
     public Image getSnapshot() {
         return lastSnapshot;
     }
@@ -59,6 +64,7 @@ public class PaintController {
     // called automatically after Controller class instantiated
     public void initialize() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        undoStack.add(canvas.snapshot(null, null));
 
         //Enables canvas resizing
         canvas.widthProperty().bind(borderPane.widthProperty());
@@ -76,9 +82,11 @@ public class PaintController {
 
         //start with path when clicked
         canvas.setOnMousePressed(event -> {
+            redoStack.clear();
             double size = slider.getValue();
+
             if (eraser.isSelected()) {
-                gc.clearRect(event.getX() - (size/2), event.getY() - (size/2), size, size);
+                gc.clearRect(event.getX() - (size / 2), event.getY() - (size / 2), size, size);
             } else {
                 gc.beginPath();
                 gc.lineTo(event.getX(), event.getY());
@@ -91,16 +99,19 @@ public class PaintController {
             double size = slider.getValue();
 
             if (eraser.isSelected()) {
-                gc.clearRect(e.getX() - (size/2), e.getY() - (size/2), size, size);
+                gc.clearRect(e.getX() - (size / 2), e.getY() - (size / 2), size, size);
             } else {
                 gc.lineTo(e.getX(), e.getY());
                 gc.stroke();
-                lastSnapshot = canvas.snapshot(null, null);
             }
         });
 
+        //Take snapshot every time the mouse is released
+        canvas.setOnMouseReleased(event -> undoStack.add(canvas.snapshot(null, null)));
+
         //Clear all button will 'clear all'
         button.setOnAction(e -> {
+            undoStack.add(canvas.snapshot(null, null));
             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         });
@@ -112,6 +123,7 @@ public class PaintController {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.drawImage(img, 0, 0, canvas.getWidth(), canvas.getHeight());
+        undoStack.add(canvas.snapshot(null, null));
 
     }
 
@@ -131,9 +143,27 @@ public class PaintController {
         }
     }
 
-    public void onMouseEntered(){
+    public void onMouseEntered() {
         Image brush = new Image("resources/brush.png");
         canvas.setCursor(new ImageCursor(brush));
+    }
+
+    public void undo() {
+        if (!undoStack.isEmpty() && undoStack.peekLast() != null) {
+            Image snap = undoStack.pollLast();
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            gc.drawImage(snap, 0, 0, canvas.getWidth(), canvas.getHeight());
+            redoStack.add(snap);
+        }
+    }
+
+    public void redo() {
+        if (!redoStack.isEmpty() && redoStack.peekLast() != null) {
+            Image snap = redoStack.pollLast();
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            gc.drawImage(snap, 0, 0, canvas.getWidth(), canvas.getHeight());
+            undoStack.add(snap);
+        }
     }
 
     //Menubar actions:
