@@ -63,14 +63,14 @@ public class Image {
         }
     }
 
-    public Image(String name, String description, File thumbnail, File img) {
+    public Image(String name, String description, File img, File thumbnail) {
         this.name = name;
         this.description = description;
         this.thumbnail = thumbnail;
         this.img = img;
     }
 
-    public Image(int ID, String name, String description, File thumbnail, File img) {
+    public Image(int ID, String name, String description, File img, File thumbnail) {
 
         this.ID = ID;
         this.name = name;

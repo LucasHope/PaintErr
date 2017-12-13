@@ -73,14 +73,20 @@ public class PaintApplication extends Application {
         VBox vBox = new VBox(20);
         vBox.setAlignment(Pos.CENTER);
 
-        Label label = new Label("This is the welcome page. Not much to see yet, but please do go on by clicking this button:");
+        Label label = new Label("Welcome to Paint_Err! What would you like to do?");
 
-        Button welcomeButton = new Button("Start new image");
+        Button startNew = new Button("Draw a new image");
+        Button editOld = new Button("Edit an old image ...");
 
-        vBox.getChildren().addAll(label, welcomeButton);
+        vBox.getChildren().addAll(label, startNew, editOld);
 
         //Set scene for new image
-        welcomeButton.setOnAction(event -> primaryStage.setScene(scene));
+        startNew.setOnAction(event -> primaryStage.setScene(scene));
+
+        editOld.setOnAction((event -> {
+            primaryStage.setScene(scene);
+            paintController.onLocalOpen();
+        }));
 
         //Show old images as buttons if they exist
         makeButtons(vBox);
@@ -119,6 +125,10 @@ public class PaintApplication extends Application {
         //create for imagebuttons
         ImageButton[] imageButtons= new ImageButton[4];
 
+        Label emptyLabel = new Label("");
+
+        Label galleryLabel = new Label("Here you can view (and edit) some of the latest database creations:");
+
         if (!list.isEmpty()) {
 
             if (list.size() > 3) {
@@ -142,7 +152,7 @@ public class PaintApplication extends Application {
                 }
 
                 //add buttons to vbox
-                vBox.getChildren().add(imageHbox);
+                vBox.getChildren().addAll(emptyLabel, galleryLabel, imageHbox);
 
             } else {
 
@@ -162,7 +172,8 @@ public class PaintApplication extends Application {
 
                     counter++;
             }
-                vBox.getChildren().add(imageHbox);
+
+                vBox.getChildren().addAll(emptyLabel, galleryLabel, imageHbox);
 
             }
         }

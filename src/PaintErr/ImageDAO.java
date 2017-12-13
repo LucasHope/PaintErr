@@ -71,43 +71,16 @@ public class ImageDAO {
 
             Image i = new Image(
                     rs.getInt("ID"),
+                    rs.getString("name"),
+                    rs.getString("description"),
                     loadImg,
                     loadThumbnail
             );
 
+            System.out.println("Found by All - " + i.getID() + " - Name: " + i.getName() + ", Description: " + i.getDescription());
+
             list.add(i);
         }
-
-        // iterate through results to find all the Images and add them to list
-//        while (rs.next()) {
-//
-//            imgcounter++;
-//            thumbnailcounter++;
-//
-//            loadImg = new File("./src/img/", "loadtemp" + imgcounter + ".png");
-//            imgInput = new FileOutputStream(loadImg);
-//
-//            loadThumbnail = new File("./src/img/", "loadthumbnailtemp" + thumbnailcounter + ".png");
-//            thumbnailInput = new FileOutputStream(loadThumbnail);
-//
-//            blob = rs.getBlob("img");
-//            b = blob.getBytes(1,(int)blob.length());
-//            imgInput.write(b);
-//
-//            blob = rs.getBlob("thumbnail");
-//            b = blob.getBytes(1,(int)blob.length());
-//            thumbnailInput.write(b);
-//
-//            Image i = new Image(
-//                    rs.getInt("ID"),
-//                    rs.getString("name"),
-//                    rs.getString("description"),
-//                    loadThumbnail,
-//                    loadImg
-//            );
-//
-//            list.add(i);
-//        }
 
         // return the compiled list
         return list;
@@ -178,31 +151,14 @@ public class ImageDAO {
 
             i = new Image(
                     rs.getInt("ID"),
+                    rs.getString("name"),
+                    rs.getString("description"),
                     loadImg,
                     loadThumbnail
             );
         }
 
-        // create the Image to be returned from the ResultSet
-//        while (rs.next()) {
-//
-//            blob=rs.getBlob("img");
-//            b=blob.getBytes(1,(int)blob.length());
-//            imgInput.write(b);
-//
-//            blob=rs.getBlob("thumbnail");
-//            b=blob.getBytes(1,(int)blob.length());
-//            thumbnailInput.write(b);
-//
-//            i = new Image(
-//                    rs.getInt("ID"),
-//                    rs.getString("name"),
-//                    rs.getString("description"),
-//                    loadThumbnail,
-//                    loadImg
-//            );
-//
-//        }
+        System.out.println("Found by ID - " + i.getID() + " - Name: " + i.getName() + ", Description: " + i.getDescription());
 
         // return the found (or null) Image
         return i;
@@ -233,9 +189,10 @@ public class ImageDAO {
             // create statement if no ID, update if has ID
             if (i.getID() == 0) {
 
+                System.out.println("Saving - NEW - Name: " + i.getName() + ", Description: " + i.getDescription());
+
                 // create statement to create a new record
                 String sql = "INSERT img (name, description, thumbnail, img) VALUES (?, ?, ?, ?);";
-//                String sql = "INSERT img (img, thumbnail) VALUES (?, ?);";
 
                 PreparedStatement ps = con.prepareStatement(sql);
 
@@ -244,16 +201,14 @@ public class ImageDAO {
                 ps.setBinaryStream(3, thumbInput, (int)thumbnail.length());
                 ps.setBinaryStream(4, imgInput, (int)img.length());
 
-//                ps.setBinaryStream(1, imgInput, (int)img.length());
-//                ps.setBinaryStream(2, thumbInput, (int)thumbnail.length());
-
                 result = ps.executeUpdate();
 
             } else {
 
+                System.out.println("Saving - " + i.getID() + " - Name: " + i.getName() + ", Description: " + i.getDescription());
+
                 // update statement to update an existing record in database
                 String sql = "UPDATE img SET name = ?, description = ?, thumbnail = ?, img = ? WHERE ID=?;";
-//                String sql = "UPDATE img SET img = ?, thumbnail = ? WHERE ID=?;";
 
                 PreparedStatement ps = con.prepareStatement(sql);
 
@@ -263,15 +218,12 @@ public class ImageDAO {
                 ps.setBinaryStream(4, imgInput, (int)img.length());
                 ps.setInt(5, i.getID());
 
-                ps.setBinaryStream(1, imgInput, (int)img.length());
-                ps.setBinaryStream(2, thumbInput, (int)thumbnail.length());
-                ps.setInt(3, i.getID());
-
                 result = ps.executeUpdate();
 
             }
         } catch (Exception e) {
             System.out.println("Failed: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
 
