@@ -122,7 +122,7 @@ public class PaintApplication extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //create for imagebuttons
+        //create imagebuttons
         ImageButton[] imageButtons= new ImageButton[4];
 
         Label emptyLabel = new Label("");

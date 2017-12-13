@@ -11,8 +11,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.Alert.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.Optional;
 
@@ -133,7 +131,7 @@ public class PaintController {
 
     }
 
-    //Called from application, draws wanted image on canvas
+    // Called from application, draws wanted image on canvas
     void setCanvas(Image img) {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -142,7 +140,7 @@ public class PaintController {
 
     }
 
-    //delete temporary files
+    // Delete temporary files
     private void clearImgFolder() {
 
         File imgFolder = new File("./src/img/");
@@ -158,6 +156,7 @@ public class PaintController {
         }
     }
 
+    // Change cursor to brush when hovered over canvas.
     public void onMouseEntered() {
         Image brush = new Image("resources/brush.png");
         canvas.setCursor(new ImageCursor(brush));
@@ -353,6 +352,7 @@ public class PaintController {
 
     }
 
+    // Show a popup to ask for id input
     private int queryID() {
 
         int id;
@@ -375,9 +375,6 @@ public class PaintController {
             parseable = result.get();
 
         }
-
-//        // The Java 8 (lambda) to get the response
-//        result.ifPresent(input -> parseable = input);
 
         try {
 
