@@ -7,36 +7,43 @@
 
     <meta charset="UTF-8" />
 
-    <link rel="stylesheet" href="css/style.css"/>
+    <style>
+        span {}
+        .text {font-size: 120%;}
+        a {
+            margin: 3%;
+            float: left;
+            width: 25%;
+            text-decoration: none;
+            color: antiquewhite;
+        }
+        img {width: 100%;}
+    </style>
 
 </head>
 
-<body>
+<body style="background-color: #2C2C2C">
 
 <div id="content">
 
+    <br/>
 
-        <h1>Paint_Err Gallery, all pictures and ID's</h1>
+    <h1 align="center" style="color: antiquewhite">Paint_Err Gallery</h1>
 
-        <br/>
-        <hr/>
-        <br/>
+    <div id="images">
 
-        <ul style="font-size: 200%; list-style: none;">
+        <th:block th:each=" img : ${images} ">
+            <a th:with="src=${'data:image/png;charset=utf-8;base64,' + img.Img},url=${'/gallery?id=' + img.ID}" th:href="${url}">
+                <img src="#" th:src="${src}" />
+                <span class="text">ID <span th:text="${img.ID}">ID</span> - by: <span th:text="${img.Name}">Name</span></span> <br/>
+                <i><span th:text="${img.Description}">Description</span></i>
+            </a>
+        </th:block>
 
-            <th:block th:each=" img : ${images} ">
-                <li th:with="src=${'data:image/png;charset=utf-8;base64,' + img.Img}">
-                    ID <span th:text="${img.ID}">ID</span>: <span th:text="${img.Name}">Name</span> <br/>
-                    <span th:text="${img.Description}">Description</span> <br/>
-                    <img src="#" th:src="${src}" style="width: 40%;"/>
-                </li>
-            </th:block>
-
-        </ul>
+    </div>
 
 </div>
 
-<script src="js/nav.js"></script>
 
 </body>
 
