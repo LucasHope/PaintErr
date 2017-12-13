@@ -55,16 +55,16 @@ public class PaintFunctions {
 
         q.add(pixel);
 
-        while (q.peek() != null) {
+        while (!q.isEmpty()) {
 
-            p = q.remove();
-//            System.out.print("\n\npop: p: X " + p.getX() + " Y " + p.getY() + ", count: " + counter++);
+            p = q.pop();
+            System.out.println("\npop: count: " + counter++ + " - X " + p.getX() + " Y " + p.getY());
 
             pw.setColor(p.getX(), p.getY(), newColour);
 
             // if north and south of pixel are of oldColour, add to q
-            if (pr.getColor(p.getX(), p.getY() + 1).equals(oldColour)) q.add(new Pixel(p.getX(), p.getY() + 1));
-            if (pr.getColor(p.getX(), p.getY() - 1).equals(oldColour)) q.add(new Pixel(p.getX(), p.getY() - 1));
+            if (p.getY() <= img.getHeight()-2 && pr.getColor(p.getX(), p.getY() + 1).equals(oldColour)) q.add(new Pixel(p.getX(), p.getY() + 1));
+            if (p.getY() >= 1 && pr.getColor(p.getX(), p.getY() - 1).equals(oldColour)) q.add(new Pixel(p.getX(), p.getY() - 1));
 
             w = new Pixel(p.getX(), p.getY());
 
@@ -72,15 +72,14 @@ public class PaintFunctions {
             while (true) {
 
                 w.setX(w.getX() - 1);
-//                System.out.println("Going west");
 
-                System.out.print("\n\n at West point: X " + w.getX() + " Y " + w.getY() + ", colour: " + pr.getColor(w.getX(), w.getY()));
-
-                if (!(pr.getColor(w.getX(), w.getY()).equals(oldColour)) || w.getX() <= 0) break;
+                if (w.getX() == 1 || !(pr.getColor(w.getX(), w.getY()).equals(oldColour))) break;
                 else pw.setColor(w.getX(), w.getY(), newColour);
 
-                if (pr.getColor(w.getX(), w.getY() + 1).equals(oldColour)) q.add(new Pixel(w.getX(), w.getY() + 1));
-                if (pr.getColor(w.getX(), w.getY() - 1).equals(oldColour)) q.add(new Pixel(w.getX(), w.getY() - 1));
+                if (w.getX() % 100 == 0) {
+                    if (w.getY() <= img.getHeight()-2 && pr.getColor(w.getX(), w.getY() + 1).equals(oldColour)) q.add(new Pixel(w.getX(), w.getY() + 1));
+                    if (w.getY() >= 1 && pr.getColor(w.getX(), w.getY() - 1).equals(oldColour)) q.add(new Pixel(w.getX(), w.getY() - 1));
+                }
 
             }
 
@@ -90,15 +89,14 @@ public class PaintFunctions {
             while (true) {
 
                 e.setX(e.getX() + 1);
-//                System.out.println("Going east");
 
-                System.out.print(" - at East point: X " + e.getX() + " Y " + e.getY() + ", colour: " + pr.getColor(e.getX(), e.getY()));
-
-                if (!(pr.getColor(e.getX(), e.getY()).equals(oldColour)) || e.getX() >= img.getWidth()) break;
+                if (e.getX() == img.getWidth() - 1 || !(pr.getColor(e.getX(), e.getY()).equals(oldColour))) break;
                 else pw.setColor(e.getX(), e.getY(), newColour);
 
-                if (pr.getColor(e.getX(), e.getY() + 1).equals(oldColour)) q.add(new Pixel(e.getX(), e.getY() + 1));
-                if (pr.getColor(e.getX(), e.getY() - 1).equals(oldColour)) q.add(new Pixel(e.getX(), e.getY() - 1));
+                if (e.getX() % 100 == 0) {
+                    if (e.getY() <= img.getHeight()-2 && pr.getColor(e.getX(), e.getY() + 1).equals(oldColour)) q.add(new Pixel(e.getX(), e.getY() + 1));
+                    if (w.getY() >= 1 && pr.getColor(e.getX(), e.getY() - 1).equals(oldColour)) q.add(new Pixel(e.getX(), e.getY() - 1));
+                }
 
             }
 
