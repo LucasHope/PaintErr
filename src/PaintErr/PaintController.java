@@ -2,6 +2,7 @@ package PaintErr;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -175,6 +176,8 @@ public class PaintController {
 
         canvas.setOnMouseReleased(e -> {
 
+            if (eraser.isSelected()) return;
+
             // if not erasing, check what is the brushtype and act accordingly
             switch (brushType) {
 
@@ -214,22 +217,30 @@ public class PaintController {
 
 //        double[] startToEnd = {shapeStartX, shapeStartY, shapeEndX, shapeEndY};
 
+        double endX, endY;
+
+        if (shapeEndX > shapeStartX) endX = shapeEndX - shapeStartX;
+        else endX = shapeStartX - shapeEndX;
+
+        if (shapeEndY > shapeStartY) endY = shapeEndY - shapeStartY;
+        else endY = shapeStartY - shapeEndY;
+
         switch(brushType) {
 
             case "line":
                 gc.strokeLine(shapeStartX, shapeStartY, shapeEndX, shapeEndY);
                 break;
             case "circle":
-                gc.strokeOval(shapeStartX, shapeStartY, shapeEndX, shapeEndY);
+                gc.strokeOval(shapeStartX, shapeStartY, shapeEndX - shapeStartX, shapeEndY - shapeStartY);
                 break;
             case "filledCircle":
-                gc.fillOval(shapeStartX, shapeStartY, shapeEndX, shapeEndY);
+                gc.fillOval(shapeStartX, shapeStartY, endX, endY);
                 break;
             case "rectangle":
-                gc.strokeRect(shapeStartX, shapeStartY, shapeEndX, shapeEndY);
+                gc.strokeRect(shapeStartX, shapeStartY, endX, endY);
                 break;
             case "filledRectangle":
-                gc.fillRect(shapeStartX, shapeStartY, shapeEndX, shapeEndY);
+                gc.fillRect(shapeStartX, shapeStartY, endX, endY);
                 break;
 
             default:
@@ -280,13 +291,19 @@ public class PaintController {
 
     // Change cursor to brush when hovered over canvas.
     public void onMouseEntered() {
-        if ("fillBrush".equals(brushType)) {
+
+        if ("fill".equals(brushType)) {
+
             Image fillBrush = new Image("resources/paint-bucket.png");
             canvas.setCursor(new ImageCursor(fillBrush));
-        } else {
+
+        } else if ("brush".equals(brushType)) {
+
             Image brush = new Image("resources/brush.png");
             canvas.setCursor(new ImageCursor(brush));
 
+        } else {
+            canvas.setCursor(Cursor.CROSSHAIR);
         }
     }
 
