@@ -37,7 +37,6 @@ public class ResizableCanvas extends Canvas {
 
         GraphicsContext gc = getGraphicsContext2D();
         gc.drawImage(snap, 0, 0, width, height);
-//        gc.clearRect(0, 0, width, height);
 
     }
 
