@@ -89,7 +89,6 @@ public class PaintController {
         canvas.setOnMousePressed(e -> {
 
             redoStack.clear();
-            undoStack.add(canvas.snapshot(null, null));
 
             double size = slider.getValue();
             if (eraser.isSelected()) {
@@ -114,10 +113,15 @@ public class PaintController {
 
                     case "brush":
                     default:
+
+                        undoStack.add(canvas.snapshot(null, null));
+
                         gc.beginPath();
                         gc.lineTo(e.getX(), e.getY());
                         gc.stroke();
+
                         break;
+
                 }
 
             }
