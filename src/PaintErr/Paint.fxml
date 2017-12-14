@@ -80,12 +80,18 @@
             <fx:define>
                 <Image fx:id="brushimg" url="@brush1.png" />
                 <Image fx:id="fillimg" url="@paint-bucket1.png" />
+                <Image fx:id="circle" url="@circle.png"/>
+                <Image fx:id="fillcircle" url="@fillcircle.png"/>
+                <Image fx:id="rect" url="@rect.png"/>
+                <Image fx:id="fillrect" url="@fillrect.png"/>
+                <Image fx:id="line" url="@line.png"/>
             </fx:define>
             <Button fx:id="button1" onAction="#onBrush" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;">
             <graphic><ImageView image="$brushimg" fitHeight="31.0" fitWidth="31.0" /></graphic></Button>
             <HBox />
             <Button fx:id="button11" layoutX="663.0" layoutY="17.0" onAction="#onFillBrush" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;">
             <graphic><ImageView image="$fillimg" fitHeight="31.0" fitWidth="31.0" /></graphic></Button>
+
 
         </ToolBar>
    </left>
