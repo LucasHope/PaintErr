@@ -40,6 +40,7 @@ public class PaintController {
     private Image lastSnapshot;
 
     private String brushType = "brush";
+    private int shapeStartX, shapeStartY, shapeEndX, shapeEndY;
 
     private LocalFileHandler fileHandler = new LocalFileHandler();
 
@@ -94,13 +95,31 @@ public class PaintController {
             if (eraser.isSelected()) {
                 gc.clearRect(e.getX() - (size / 2), e.getY() - (size / 2), size, size);
             } else {
-                if ("fillBrush".equals(brushType)) {
-                    setCanvas(PaintFunctions.fill((int) e.getX(), (int) e.getY(), canvas, colorPicker.getValue()));
-                } else {
-                    gc.beginPath();
-                    gc.lineTo(e.getX(), e.getY());
-                    gc.stroke();
+
+                // if not erasing, check what is the brushtype and act accordingly
+                switch (brushType) {
+
+                    case "fill":
+                        setCanvas(PaintFunctions.fill((int) e.getX(), (int) e.getY(), canvas, colorPicker.getValue()));
+                        break;
+
+                    case "line":
+                    case "circle":
+                    case "filledCircle":
+                    case "rectangle":
+                    case "filledRectangle":
+                        shapeStartX = (int)e.getX();
+                        shapeStartY = (int)e.getY();
+                        break;
+
+                    case "brush":
+                    default:
+                        gc.beginPath();
+                        gc.lineTo(e.getX(), e.getY());
+                        gc.stroke();
+                        break;
                 }
+
             }
         });
 
@@ -111,17 +130,51 @@ public class PaintController {
             if (eraser.isSelected()) {
                 gc.clearRect(e.getX() - (size / 2), e.getY() - (size / 2), size, size);
             } else {
-                if ("fillBrush".equals(brushType)) {
-                    setCanvas(PaintFunctions.fill((int) e.getX(), (int) e.getY(), canvas, colorPicker.getValue()));
-                } else {
-                    gc.lineTo(e.getX(), e.getY());
-                    gc.stroke();
+
+                // if not erasing, check what is the brushtype and act accordingly
+                switch (brushType) {
+
+                    case "fill":
+                        setCanvas(PaintFunctions.fill((int) e.getX(), (int) e.getY(), canvas, colorPicker.getValue()));
+                        break;
+
+                    case "line":
+                    case "circle":
+                    case "filledCircle":
+                    case "rectangle":
+                    case "filledRectangle":
+                        break;
+
+                    case "brush":
+                    default:
+                        gc.lineTo(e.getX(), e.getY());
+                        gc.stroke();
+                        break;
                 }
+
             }
         });
 
-        //Take snapshot every time the mouse is released
-//        canvas.setOnMouseReleased(event -> undoStack.add(canvas.snapshot(null, null)));
+
+        canvas.setOnMouseReleased(event -> {
+
+            // if not erasing, check what is the brushtype and act accordingly
+            switch (brushType) {
+
+                case "line":
+                case "circle":
+                case "filledCircle":
+                case "rectangle":
+                case "filledRectangle":
+                    break;
+
+                case "fill":
+                case "brush":
+                default:
+                    break;
+            }
+
+        });
 
         //Clear all button will 'clear all'
         button.setOnAction(e -> {
@@ -213,7 +266,32 @@ public class PaintController {
 
     // Toggle fill-brush
     public void onFillBrush() {
-        brushType = "fillBrush";
+        brushType = "fill";
+    }
+
+    // Toggle line-brush
+    public void onLineBrush() {
+        brushType = "line";
+    }
+
+    // Toggle circle-brush
+    public void onCircleBrush() {
+        brushType = "circle";
+    }
+
+    // Toggle filledCircle-brush
+    public void onFilledCircleBrush() {
+        brushType = "filledCircle";
+    }
+
+    // Toggle rectangle-brush
+    public void onRectangleBrush() {
+        brushType = "rectangle";
+    }
+
+    // Toggle filledRectangle-brush
+    public void onFilledRectangleBrush() {
+        brushType = "filledRectangle";
     }
 
 
