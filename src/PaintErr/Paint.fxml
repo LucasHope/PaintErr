@@ -76,7 +76,7 @@
             <HBox />
             <Button fx:id="redoButton" onAction="#redo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;" text="Redo" />
             <HBox />
-            <Separator orientation="HORIZONTAL" />
+            <Separator />
             <fx:define>
                 <Image fx:id="brushimg" url="@brush1.png" />
                 <Image fx:id="fillimg" url="@paint-bucket1.png" />
