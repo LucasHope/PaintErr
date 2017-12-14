@@ -17,7 +17,8 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.image.Image?>
-<BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PaintErr.PaintController">
+<BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="PaintErr.PaintController">
 
     <top>
         <VBox>
@@ -49,8 +50,11 @@
                <padding>
                   <Insets left="10.0" />
                </padding></ColorPicker>
-                <Slider fx:id="slider" blockIncrement="1" layoutX="26.0" layoutY="32.0" majorTickUnit="2" max="24" min="2" minorTickCount="1" prefHeight="45.0" prefWidth="270.0" showTickLabels="true" showTickMarks="true" snapToPixel="false" style="-fx-padding: 0 10 0 50;" value="4.0" />
-                <CheckBox fx:id="eraser" nodeOrientation="RIGHT_TO_LEFT" prefHeight="21.0" prefWidth="113.0" style="-fx-padding: 0 20 0 0;" text="Eraser" />
+                <Slider fx:id="slider" blockIncrement="1" layoutX="26.0" layoutY="32.0" majorTickUnit="2"
+                        max="24" min="2" minorTickCount="1" prefHeight="45.0" prefWidth="270.0" showTickLabels="true"
+                        showTickMarks="true" snapToPixel="false" style="-fx-padding: 0 10 0 50;" value="4.0" />
+                <CheckBox fx:id="eraser" nodeOrientation="RIGHT_TO_LEFT" prefHeight="21.0" prefWidth="113.0"
+                          style="-fx-padding: 0 20 0 0;" text="Eraser" />
                 <Button fx:id="button" prefHeight="31.0" prefWidth="84.0" style="-fx-padding: 5px;" text="Clear all">
                <opaqueInsets>
                   <Insets />
@@ -72,9 +76,11 @@
     </center>
    <left>
         <ToolBar orientation="VERTICAL" prefHeight="700.0" prefWidth="52.0" BorderPane.alignment="CENTER">
-            <Button fx:id="undoButton" onAction="#undo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;" text="Undo" />
+            <Button fx:id="undoButton" onAction="#undo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;"
+                    text="Undo" />
             <HBox />
-            <Button fx:id="redoButton" onAction="#redo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;" text="Redo" />
+            <Button fx:id="redoButton" onAction="#redo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;"
+                    text="Redo" />
             <HBox />
             <Separator />
             <fx:define>
@@ -89,7 +95,8 @@
             <Button fx:id="button1" onAction="#onBrush" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;">
             <graphic><ImageView image="$brushimg" fitHeight="31.0" fitWidth="31.0" /></graphic></Button>
             <HBox />
-            <Button fx:id="button11" layoutX="663.0" layoutY="17.0" onAction="#onFillBrush" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;">
+            <Button fx:id="button11" layoutX="663.0" layoutY="17.0" onAction="#onFillBrush" prefHeight="31.0"
+                    prefWidth="50.0" style="-fx-padding: 5px;">
             <graphic><ImageView image="$fillimg" fitHeight="31.0" fitWidth="31.0" /></graphic></Button>
             <Separator>
 
