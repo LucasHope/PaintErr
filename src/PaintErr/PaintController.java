@@ -78,7 +78,12 @@ public class PaintController {
         //set black as default
         colorPicker.setValue(Color.BLACK);
         //set new color on stroke when chosen
-        colorPicker.setOnAction(event -> gc.setStroke(colorPicker.getValue()));
+        colorPicker.setOnAction(event -> {
+            gc.setStroke(colorPicker.getValue());
+            gc.setFill(colorPicker.getValue());
+        });
+
+        
 
         //set new brushsize when chosen
         gc.setLineWidth(slider.getValue());
@@ -231,7 +236,7 @@ public class PaintController {
                 gc.strokeLine(shapeStartX, shapeStartY, shapeEndX, shapeEndY);
                 break;
             case "circle":
-                gc.strokeOval(shapeStartX, shapeStartY, shapeEndX - shapeStartX, shapeEndY - shapeStartY);
+                gc.strokeOval(shapeStartX, shapeStartY, endX, endY);
                 break;
             case "filledCircle":
                 gc.fillOval(shapeStartX, shapeStartY, endX, endY);

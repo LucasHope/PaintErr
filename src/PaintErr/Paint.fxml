@@ -45,7 +45,7 @@
             </MenuBar>
 
             <ToolBar snapToPixel="false">
-                <HBox alignment="BOTTOM_CENTER" prefHeight="45.0" prefWidth="60.0" spacing="5" />
+                <!--<HBox alignment="BOTTOM_CENTER" prefHeight="45.0" prefWidth="60.0" spacing="5" />-->
                 <ColorPicker fx:id="colorPicker" promptText="Pick a colour">
                <padding>
                   <Insets left="10.0" />
@@ -55,10 +55,17 @@
                         showTickMarks="true" snapToPixel="false" style="-fx-padding: 0 10 0 50;" value="4.0" />
                 <CheckBox fx:id="eraser" nodeOrientation="RIGHT_TO_LEFT" prefHeight="21.0" prefWidth="113.0"
                           style="-fx-padding: 0 20 0 0;" text="Eraser" />
-                <Button fx:id="button" prefHeight="31.0" prefWidth="84.0" style="-fx-padding: 5px;" text="Clear all">
+                <Button fx:id="button" prefHeight="31.0" prefWidth="84.0" style="-fx-padding: 5px;" text="Clear all"/>
+                <HBox prefWidth="30"/>
+                    <Button fx:id="undoButton" onAction="#undo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;"
+                            text="Undo" />
+                    <HBox />
+                    <Button fx:id="redoButton" onAction="#redo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;"
+                            text="Redo" />
+                    <HBox />
                <opaqueInsets>
                   <Insets />
-               </opaqueInsets></Button>
+               </opaqueInsets>
 
             <VBox.margin>
                <Insets />
@@ -76,13 +83,8 @@
     </center>
    <left>
         <ToolBar orientation="VERTICAL" prefHeight="700.0" prefWidth="52.0" BorderPane.alignment="CENTER">
-            <Button fx:id="undoButton" onAction="#undo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;"
-                    text="Undo" />
-            <HBox />
-            <Button fx:id="redoButton" onAction="#redo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;"
-                    text="Redo" />
-            <HBox />
-            <Separator />
+
+            <VBox prefHeight="90"/>
             <fx:define>
                 <Image fx:id="brushimg" url="@brush1.png" />
                 <Image fx:id="fillimg" url="@paint-bucket1.png" />
@@ -94,22 +96,31 @@
             </fx:define>
             <Button fx:id="button1" onAction="#onBrush" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;">
             <graphic><ImageView image="$brushimg" fitHeight="31.0" fitWidth="31.0" /></graphic></Button>
-            <HBox />
+            <HBox prefHeight="10"/>
             <Button fx:id="button11" layoutX="663.0" layoutY="17.0" onAction="#onFillBrush" prefHeight="31.0"
                     prefWidth="50.0" style="-fx-padding: 5px;">
             <graphic><ImageView image="$fillimg" fitHeight="31.0" fitWidth="31.0" /></graphic></Button>
-            <Separator>
-
-            </Separator>
+            <HBox prefHeight="10"/>
+            <Separator></Separator>
+            <HBox prefHeight="10"/>
             <Button fx:id="lineButton" onAction="#onLineBrush" prefHeight="15" prefWidth="31">
                 <graphic><ImageView image="$line"></ImageView> </graphic>
             </Button>
+            <HBox prefHeight="10"/>
+            <Separator></Separator>
+            <HBox prefHeight="10"/>
+
             <Button fx:id="circleButton" onAction="#onCircleBrush" prefHeight="15" prefWidth="31">
                 <graphic><ImageView image="$circle" ></ImageView> </graphic>
             </Button>
             <Button fx:id="fillCircleButton" onAction="#onFilledCircleBrush" prefHeight="15" prefWidth="31">
                 <graphic><ImageView image="$fillcircle"></ImageView> </graphic>
             </Button>
+            <HBox prefHeight="10"/>
+            <Separator></Separator>
+            <HBox prefHeight="10"/>
+
+
             <Button fx:id="rectButton" onAction="#onRectangleBrush" prefHeight="15" prefWidth="31">
                 <graphic><ImageView image="$rect" ></ImageView> </graphic>
             </Button>
