@@ -44,6 +44,30 @@ public class ImgDAO {
         return images;
     }
 
+    public Img getById(int id) {
+
+        List<Img> list = new ArrayList<>();
+
+        jdbc.query(
+                "SELECT * FROM img where id = " + id + ";",
+                (rs, rowNum) ->
+                        new Img(
+                                rs.getInt("ID"),
+                                rs.getString("name"),
+                                rs.getString("description"),
+                                rs.getBlob("thumbnail"),
+                                rs.getBlob("img")
+                        )
+        ).forEach(
+                img -> {
+                    list.add(img);
+                }
+        );
+
+        return list.get(0);
+
+    }
+
     public List<Img64> to64(List<Img> list) {
 
         List<Img64> list64 = new ArrayList<>();
@@ -67,6 +91,16 @@ public class ImgDAO {
 
         return list64;
 
+    }
+
+    public Img64 to64(Img img) {
+        return new Img64(
+                img.getID(),
+                img.getName(),
+                img.getDescription(),
+                encodeTo64(img.getThumbnail()),
+                encodeTo64(img.getImg())
+        );
     }
 
     private String encodeTo64(Blob blob) {

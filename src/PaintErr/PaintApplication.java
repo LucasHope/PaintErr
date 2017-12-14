@@ -30,8 +30,7 @@ public class PaintApplication extends Application {
 
     private static Stage primaryStage;
 
-    public PaintApplication() {
-    }
+    public PaintApplication() {}
 
     public static Stage getPrimaryStage() {return primaryStage;}
 
@@ -56,8 +55,12 @@ public class PaintApplication extends Application {
         //Load paint.fxml
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Paint.fxml"));
         Parent root = loader.load();
+
         //Set controller
         paintController = (PaintController)loader.getController();
+
+        // ensure there are no leftover images from earlier program runs
+        paintController.clearImgFolder();
 
         //Make sure canvas is white
         root.setStyle("-fx-background-color: white");
@@ -81,11 +84,15 @@ public class PaintApplication extends Application {
         vBox.getChildren().addAll(label, startNew, editOld);
 
         //Set scene for new image
-        startNew.setOnAction(event -> primaryStage.setScene(scene));
+        startNew.setOnAction(e -> {
+            primaryStage.setScene(scene);
+            paintController.clearImgFolder();
+        });
 
-        editOld.setOnAction((event -> {
+        editOld.setOnAction((e -> {
             primaryStage.setScene(scene);
             paintController.onLocalOpen();
+            paintController.clearImgFolder();
         }));
 
         //Show old images as buttons if they exist
@@ -95,6 +102,13 @@ public class PaintApplication extends Application {
         stackPane.getChildren().addAll(vBox);
         primaryStage.setScene(new Scene(stackPane, 800,700));
         primaryStage.show();
+
+        paintController.clearImgFolder();
+
+        primaryStage.setOnCloseRequest(event -> {
+            paintController.clearImgFolder();
+            System.out.println("Close request.");
+        });
 
     }
 
@@ -106,6 +120,8 @@ public class PaintApplication extends Application {
         //set wanted image to canvas
         Image canvasImage = new Image(image.getImg().toURI().toString());
         paintController.setCanvas(canvasImage);
+
+        paintController.clearImgFolder();
 
     }
 

@@ -55,10 +55,12 @@ public class ImageDAO {
             imgcounter++;
             thumbnailcounter++;
 
-            loadImg = new File("./src/img/", "loadtemp" + imgcounter + ".png");
+//            loadImg = new File("./src/img/", "loadtemp" + imgcounter + ".png");
+            loadImg = new File("./", "loadtemp" + imgcounter + ".png");
             imgInput = new FileOutputStream(loadImg);
 
-            loadThumbnail = new File("./src/img/", "loadthumbnailtemp" + thumbnailcounter + ".png");
+//            loadThumbnail = new File("./src/img/", "loadthumbnailtemp" + thumbnailcounter + ".png");
+            loadThumbnail = new File("./", "loadthumbnailtemp" + thumbnailcounter + ".png");
             thumbnailInput = new FileOutputStream(loadThumbnail);
 
             blob = rs.getBlob("img");
@@ -130,10 +132,12 @@ public class ImageDAO {
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
 
-        File loadImg = new File("./src/img/", "loadtemp.png");
+//        File loadImg = new File("./src/img/", "loadtemp.png");
+        File loadImg = new File("./", "loadtemp.png");
         FileOutputStream imgInput = new FileOutputStream(loadImg);
 
-        File loadThumbnail = new File("./src/img/", "loadthumbnailtemp.png");
+//        File loadThumbnail = new File("./src/img/", "loadthumbnailtemp.png");
+        File loadThumbnail = new File("./", "loadthumbnailtemp.png");
         FileOutputStream thumbnailInput = new FileOutputStream(loadThumbnail);
 
         byte[] b;
@@ -238,7 +242,9 @@ public class ImageDAO {
         WritableImage writableImage = canvas.snapshot(null, null);
 
         // Write snapshot to file system as a .png image
-        File img = new File("./src/img/", "savetemp.png");
+//        File img = new File("./src/img/", "savetemp.png");
+        File img = new File("./", "savetemp.png");
+
         try {
             ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null),
                     "png", img);
@@ -254,7 +260,8 @@ public class ImageDAO {
         BufferedImage bufferedThumbnail = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
         bufferedThumbnail.createGraphics().drawImage(ImageIO.read(img).getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH),0,0,null);
 
-        File thumbImg = new File("./src/img/", "savethumbtemp.png");
+//        File thumbImg = new File("./src/img/", "savethumbtemp.png");
+        File thumbImg = new File("./", "savethumbtemp.png");
         ImageIO.write(bufferedThumbnail, "png", thumbImg);
 
         return thumbImg;
@@ -263,7 +270,8 @@ public class ImageDAO {
     // loop through all files in "img"-folder and return the last (in alphabetical order) filename without extension
     public static String getCurrentLastImgName() {
 
-        File imgDirectory = new File("./src/img/");
+//        File imgDirectory = new File("./src/img/");
+        File imgDirectory = new File("./");
         File[] files = imgDirectory.listFiles();
 
         TreeSet<String> filenames = new TreeSet<>();

@@ -26,4 +26,19 @@ public class GalleryController {
 
     }
 
+    @GetMapping("/gallery/{id}")
+    public String getAll(
+            @PathVariable int id,
+            Model model) {
+
+        Img img = dao.getById(id);
+
+        Img64 img64 = dao.to64(img);
+
+        model.addAttribute("img", img64);
+
+        return "image";
+
+    }
+
 }

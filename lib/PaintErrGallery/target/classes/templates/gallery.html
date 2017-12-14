@@ -33,7 +33,7 @@
     <div id="images">
 
         <th:block th:each=" img : ${images} ">
-            <a th:with="src=${'data:image/png;charset=utf-8;base64,' + img.Img},url=${'/gallery?id=' + img.ID}" th:href="${url}">
+            <a th:with="src=${'data:image/png;charset=utf-8;base64,' + img.Img},url=${'/gallery/' + img.ID}" th:href="${url}">
                 <img src="#" th:src="${src}" />
                 <span class="text">ID <span th:text="${img.ID}">ID</span> - by: <span th:text="${img.Name}">Name</span></span> <br/>
                 <i><span th:text="${img.Description}">Description</span></i>
