@@ -32,7 +32,6 @@
                     <Menu text="Save">
                         <MenuItem onAction="#onLocalSave" text="Save to Computer..." />
                         <MenuItem onAction="#onSave" text="Save to Database" />
-                        <MenuItem onAction="#onSaveByID" text="Save to Database with an ID..." />
                     </Menu>
                     <Menu text="Close">
                         <MenuItem onAction="#onWelcome" text="Back to the Menu" />
