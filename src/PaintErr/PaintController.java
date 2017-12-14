@@ -169,8 +169,14 @@ public class PaintController {
 
     // Change cursor to brush when hovered over canvas.
     public void onMouseEntered() {
-        Image brush = new Image("resources/brush.png");
-        canvas.setCursor(new ImageCursor(brush));
+        if ("fillBrush".equals(brushType)) {
+            Image fillBrush = new Image("resources/paint-bucket.png");
+            canvas.setCursor(new ImageCursor(fillBrush));
+        } else {
+            Image brush = new Image("resources/brush.png");
+            canvas.setCursor(new ImageCursor(brush));
+
+        }
     }
 
     public void undo() {
@@ -441,6 +447,7 @@ public class PaintController {
         return input;
 
     }
+
 
 }
 
