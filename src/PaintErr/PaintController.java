@@ -39,15 +39,16 @@ public class PaintController {
     @FXML
     private Image lastSnapshot;
 
-    private String brushType = "brush";
-    private int shapeStartX, shapeStartY, shapeEndX, shapeEndY;
 
     private LocalFileHandler fileHandler = new LocalFileHandler();
 
     private PaintErr.Image activeImage;
 
-    private ArrayDeque<Image> undoStack = new ArrayDeque<>();
+    private String brushType = "brush";
+    private double shapeStartX, shapeStartY, shapeEndX, shapeEndY;
+    Image shapeImage;
 
+    private ArrayDeque<Image> undoStack = new ArrayDeque<>();
     private ArrayDeque<Image> redoStack = new ArrayDeque<>();
 
     public Image getSnapshot() {
@@ -107,8 +108,16 @@ public class PaintController {
                     case "filledCircle":
                     case "rectangle":
                     case "filledRectangle":
-                        shapeStartX = (int)e.getX();
-                        shapeStartY = (int)e.getY();
+
+                        undoStack.add(canvas.snapshot(null, null));
+                        shapeImage = canvas.snapshot(null, null);
+
+                        shapeStartX = e.getX();
+                        shapeStartY = e.getY();
+                        shapeEndX = e.getX();
+                        shapeEndY = e.getY();
+                        drawShape(brushType);
+
                         break;
 
                     case "brush":
@@ -147,6 +156,10 @@ public class PaintController {
                     case "filledCircle":
                     case "rectangle":
                     case "filledRectangle":
+                        setShapeCanvas(shapeImage);
+                        shapeEndX = e.getX();
+                        shapeEndY = e.getY();
+                        drawShape(brushType);
                         break;
 
                     case "brush":
@@ -160,7 +173,7 @@ public class PaintController {
         });
 
 
-        canvas.setOnMouseReleased(event -> {
+        canvas.setOnMouseReleased(e -> {
 
             // if not erasing, check what is the brushtype and act accordingly
             switch (brushType) {
@@ -170,6 +183,10 @@ public class PaintController {
                 case "filledCircle":
                 case "rectangle":
                 case "filledRectangle":
+                    setShapeCanvas(shapeImage);
+                    shapeEndX = e.getX();
+                    shapeEndY = e.getY();
+                    drawShape(brushType);
                     break;
 
                 case "fill":
@@ -191,12 +208,49 @@ public class PaintController {
 
     }
 
+    private void drawShape(String brushType) {
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+//        double[] startToEnd = {shapeStartX, shapeStartY, shapeEndX, shapeEndY};
+
+        switch(brushType) {
+
+            case "line":
+                gc.strokeLine(shapeStartX, shapeStartY, shapeEndX, shapeEndY);
+                break;
+            case "circle":
+                gc.strokeOval(shapeStartX, shapeStartY, shapeEndX, shapeEndY);
+                break;
+            case "filledCircle":
+                gc.fillOval(shapeStartX, shapeStartY, shapeEndX, shapeEndY);
+                break;
+            case "rectangle":
+                gc.strokeRect(shapeStartX, shapeStartY, shapeEndX, shapeEndY);
+                break;
+            case "filledRectangle":
+                gc.fillRect(shapeStartX, shapeStartY, shapeEndX, shapeEndY);
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
     // Called from application, draws wanted image on canvas
     public void setCanvas(Image img) {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.drawImage(img, 0, 0, canvas.getWidth(), canvas.getHeight());
         undoStack.add(canvas.snapshot(null, null));
+
+    }
+
+    public void setShapeCanvas(Image img) {
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.drawImage(img, 0, 0, canvas.getWidth(), canvas.getHeight());
 
     }
 
