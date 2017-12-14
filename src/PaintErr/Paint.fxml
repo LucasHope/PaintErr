@@ -76,17 +76,39 @@
             <HBox />
             <Button fx:id="redoButton" onAction="#redo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;" text="Redo" />
             <HBox />
-            <Separator orientation="HORIZONTAL" />
+            <Separator />
             <fx:define>
                 <Image fx:id="brushimg" url="@brush1.png" />
                 <Image fx:id="fillimg" url="@paint-bucket1.png" />
+                <Image fx:id="circle" url="@circle.png"/>
+                <Image fx:id="fillcircle" url="@fillcircle.png"/>
+                <Image fx:id="rect" url="@rect.png"/>
+                <Image fx:id="fillrect" url="@fillrect.png"/>
+                <Image fx:id="line" url="@line.png"/>
             </fx:define>
             <Button fx:id="button1" onAction="#onBrush" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;">
             <graphic><ImageView image="$brushimg" fitHeight="31.0" fitWidth="31.0" /></graphic></Button>
             <HBox />
             <Button fx:id="button11" layoutX="663.0" layoutY="17.0" onAction="#onFillBrush" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;">
             <graphic><ImageView image="$fillimg" fitHeight="31.0" fitWidth="31.0" /></graphic></Button>
+            <Separator>
 
+            </Separator>
+            <Button fx:id="lineButton" onAction="#onLineBrush" prefHeight="15" prefWidth="31">
+                <graphic><ImageView image="$line"></ImageView> </graphic>
+            </Button>
+            <Button fx:id="circleButton" onAction="#onCircleBrush" prefHeight="15" prefWidth="31">
+                <graphic><ImageView image="$circle" ></ImageView> </graphic>
+            </Button>
+            <Button fx:id="fillCircleButton" onAction="#onFilledCircleBrush" prefHeight="15" prefWidth="31">
+                <graphic><ImageView image="$fillcircle"></ImageView> </graphic>
+            </Button>
+            <Button fx:id="rectButton" onAction="#onRectangleBrush" prefHeight="15" prefWidth="31">
+                <graphic><ImageView image="$rect" ></ImageView> </graphic>
+            </Button>
+            <Button fx:id="fillRectButton" onAction="#onFilledRectangleBrush" prefHeight="15" prefWidth="31">
+                <graphic><ImageView image="$fillrect"></ImageView> </graphic>
+            </Button>
         </ToolBar>
    </left>
 
