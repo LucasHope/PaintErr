@@ -21,6 +21,7 @@ public class PaintFunctions {
     private static int counter = 1;
 
     public static WritableImage fill(int x, int y, Canvas canvas, Color color) {
+        y += 25;
 
         // Canvas to ImageView/WritableImage for PixelWriter
         activeImage = canvas.snapshot(null, null);

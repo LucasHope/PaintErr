@@ -8,12 +8,15 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.image.Image?>
 <BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PaintErr.PaintController">
 
     <top>
@@ -42,7 +45,7 @@
             </MenuBar>
 
             <ToolBar snapToPixel="false">
-                <HBox alignment="BOTTOM_CENTER" spacing="5" />
+                <HBox alignment="BOTTOM_CENTER" prefHeight="45.0" prefWidth="60.0" spacing="5" />
                 <ColorPicker fx:id="colorPicker" promptText="Pick a colour">
                <padding>
                   <Insets left="10.0" />
@@ -53,18 +56,7 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></Button>
-                <Button fx:id="undoButton" onAction="#undo" text="Undo" />
-                <Button fx:id="redoButton" onAction="#redo" text="Redo" />
-                <Button fx:id="button1" layoutX="574.0" layoutY="17.0" onAction="#onBrush" prefHeight="31.0" prefWidth="84.0" style="-fx-padding: 5px;" text="Brush">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                </Button>
-                <Button fx:id="button11" layoutX="663.0" layoutY="17.0" onAction="#onFillBrush" prefHeight="31.0" prefWidth="84.0" style="-fx-padding: 5px;" text="Fill">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                </Button>
+
             <VBox.margin>
                <Insets />
             </VBox.margin>
@@ -79,5 +71,24 @@
     <center>
         <ResizableCanvas fx:id="canvas" height="700" onMouseEntered="#onMouseEntered" width="1200" />
     </center>
+   <left>
+        <ToolBar orientation="VERTICAL" prefHeight="700.0" prefWidth="52.0" BorderPane.alignment="CENTER">
+            <Button fx:id="undoButton" onAction="#undo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;" text="Undo" />
+            <HBox />
+            <Button fx:id="redoButton" onAction="#redo" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;" text="Redo" />
+            <HBox />
+            <Separator orientation="HORIZONTAL" />
+            <fx:define>
+                <Image fx:id="brushimg" url="@brush1.png" />
+                <Image fx:id="fillimg" url="@paint-bucket1.png" />
+            </fx:define>
+            <Button fx:id="button1" onAction="#onBrush" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;">
+            <graphic><ImageView image="$brushimg" fitHeight="31.0" fitWidth="31.0" /></graphic></Button>
+            <HBox />
+            <Button fx:id="button11" layoutX="663.0" layoutY="17.0" onAction="#onFillBrush" prefHeight="31.0" prefWidth="50.0" style="-fx-padding: 5px;">
+            <graphic><ImageView image="$fillimg" fitHeight="31.0" fitWidth="31.0" /></graphic></Button>
+
+        </ToolBar>
+   </left>
 
 </BorderPane>

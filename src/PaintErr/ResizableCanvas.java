@@ -50,4 +50,6 @@ public class ResizableCanvas extends Canvas {
     public boolean isResizable() {
         return true;
     }
+
+
 }
