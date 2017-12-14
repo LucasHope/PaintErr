@@ -63,6 +63,7 @@ public class PaintController {
 
     // called automatically after Controller class instantiated
     public void initialize() {
+
         GraphicsContext gc = canvas.getGraphicsContext2D();
         undoStack.add(canvas.snapshot(null, null));
 
@@ -129,10 +130,12 @@ public class PaintController {
 
         });
 
+
+
     }
 
     // Called from application, draws wanted image on canvas
-    void setCanvas(Image img) {
+    public void setCanvas(Image img) {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.drawImage(img, 0, 0, canvas.getWidth(), canvas.getHeight());
@@ -140,18 +143,26 @@ public class PaintController {
 
     }
 
-    // Delete temporary files
-    private void clearImgFolder() {
+    //delete temporary files
+    public void clearImgFolder() {
 
-        File imgFolder = new File("./src/img/");
+//        File imgFolder = new File("./src/img/");
+        File imgFolder = new File(".");
         File[] files = imgFolder.listFiles();
 
         if (files == null) return;
 
         for (File f : files) {
             String filename = f.getName();
-            if (f.isFile() && "png".equals(filename.substring(filename.length() - 3))) {
+            if (f.isFile()
+                    && "png".equals(filename.substring(filename.length() - 3))
+                    && (
+                            "load".equals(filename.substring(0,4))
+                            || "save".equals(filename.substring(0,4))
+                    )) {
+
                 f.delete();
+
             }
         }
     }
@@ -258,6 +269,8 @@ public class PaintController {
             Image canvasImage = new Image(img.getImg().toURI().toString());
             setCanvas(canvasImage);
 
+            clearImgFolder();
+
         } catch (Exception e) {
 
             System.out.println("Could not load image from database. Opening a new Image to draw.");
@@ -282,6 +295,8 @@ public class PaintController {
                 i.setDescription(queryString("desc"));
                 ImageDAO.saveImg(i);
             }
+
+            clearImgFolder();
 
         } catch (Exception e) {
             System.out.println("failed to save .png");
@@ -315,6 +330,7 @@ public class PaintController {
 
         try {
             ImageDAO.saveImg(i);
+            clearImgFolder();
         } catch (Exception e) {
             System.out.println("failed to save to that ID");
             e.printStackTrace();
@@ -335,6 +351,8 @@ public class PaintController {
                 PaintErr.Image i = new PaintErr.Image(canvas);
                 fileHandler.saveLocalImage(i);
             }
+
+            clearImgFolder();
 
         } catch (Exception e) {
             e.printStackTrace();
