@@ -1,6 +1,8 @@
 package PaintErr;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -21,6 +23,8 @@ public class PaintFunctions {
     private static int counter = 1;
 
     public static WritableImage fill(int x, int y, Canvas canvas, Color color) {
+
+        // to aim the fill function to the paint can icon paint drop
         y += 25;
 
         // Canvas to ImageView/WritableImage for PixelWriter
@@ -123,5 +127,12 @@ public class PaintFunctions {
 
     }
 
+    public static void fillEmpty(ResizableCanvas canvas, Color value) {
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        gc.fillRect(0.0, 0.0, canvas.getWidth(), canvas.getHeight());
+
+    }
 }
 

@@ -106,7 +106,11 @@ public class PaintController {
                 switch (brushType) {
 
                     case "fill":
-                        setCanvas(PaintFunctions.fill((int) e.getX(), (int) e.getY(), canvas, colorPicker.getValue()));
+
+                        // if aim is to fill the whole canvas in the beginning, shortcut to a full fill w/out calculations
+                        if(undoStack.size() == 1) PaintFunctions.fillEmpty(canvas, colorPicker.getValue());
+                        else setCanvas(PaintFunctions.fill((int) e.getX(), (int) e.getY(), canvas, colorPicker.getValue()));
+
                         break;
 
                     case "line":
