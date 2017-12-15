@@ -15,6 +15,7 @@ lib/PaintErrGallery/.idea/workspace.xml
 lib/PaintErrGallery/target/
 lib/PaintErrGallery/.idea/**/tasks.xml
 lib/PaintErrGallery/.idea/**/workspace.xml
+lib/PaintErrGallery/target/*.html
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
