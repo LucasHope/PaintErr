@@ -45,9 +45,9 @@ public class PaintController {
 
     private PaintErr.Image activeImage;
 
+    private Image shapeImage;
     private String brushType = "brush";
     private double shapeStartX, shapeStartY, shapeEndX, shapeEndY;
-    Image shapeImage;
 
     private ArrayDeque<Image> undoStack = new ArrayDeque<>();
     private ArrayDeque<Image> redoStack = new ArrayDeque<>();

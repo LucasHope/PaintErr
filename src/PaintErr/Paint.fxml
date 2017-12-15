@@ -41,7 +41,7 @@
             <VBox.margin>
                <Insets />
             </VBox.margin>
-                
+
             </MenuBar>
 
             <ToolBar snapToPixel="false">
@@ -81,6 +81,7 @@
     <center>
         <ResizableCanvas fx:id="canvas" height="700" onMouseEntered="#onMouseEntered" width="1200" />
     </center>
+
    <left>
         <ToolBar orientation="VERTICAL" prefHeight="700.0" prefWidth="52.0" BorderPane.alignment="CENTER">
 

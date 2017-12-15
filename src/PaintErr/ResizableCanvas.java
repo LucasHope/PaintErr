@@ -51,5 +51,4 @@ public class ResizableCanvas extends Canvas {
         return true;
     }
 
-
 }

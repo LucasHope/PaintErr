@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
 
     <style>
-        img {}
+        img {width: 100%;}
         span {
             color: antiquewhite;
             font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
@@ -26,14 +26,14 @@
 
     <br/>
 
-    <a align="center" href="/gallery" style="color: antiquewhite; margin-left: 15.5%;">Back to gallery</a>
+    <a align="center" href="/gallery" style="color: antiquewhite; margin-left: 16%;">Back to gallery</a>
 
     <br/>
     <br/>
 
     <!--<h1 align="center" style="color: antiquewhite">Paint_Err Gallery</h1>-->
 
-    <div align="center" style="font-size: 200%; width: 75%; margin-left: 12%;" th:with="src=${'data:image/png;charset=utf-8;base64,' + img.Img}">
+    <div align="center" style="font-size: 200%; width: 60%; margin-left: 19%;" th:with="src=${'data:image/png;charset=utf-8;base64,' + img.Img}">
         <span class="text">ID <span th:text="${img.ID}">ID</span>: by <span th:text="${img.Name}">Name</span> - </span>
         <i><span th:text="${img.Description}">Description</span></i> <br/> <br/>
         <img style="width: 100%;" src="#" th:src="${src}" /> <br/>

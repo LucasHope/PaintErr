@@ -134,5 +134,6 @@ public class PaintFunctions {
         gc.fillRect(0.0, 0.0, canvas.getWidth(), canvas.getHeight());
 
     }
+
 }
 
